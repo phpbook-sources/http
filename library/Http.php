@@ -12,6 +12,26 @@ abstract class Http {
 
         $parameters = array_values(array_diff($requestUri, $directory));
 
+        $path = array_shift($parameters);
+
+        if ($path == Configuration\Directory::getApp()) {
+
+            Static::startApp($parameters);
+
+        } else if ($path == Configuration\Directory::getDocs()) {
+
+            Static::startDocs($parameters);
+
+        } else {
+
+            Dispatch::exception('not found', 404);
+
+        };
+        
+    }
+
+    private static function startApp(Array $parameters) {
+
         $dispatch = null;
 
         $uri = null;
@@ -164,7 +184,40 @@ abstract class Http {
 
         };
 
-
     }
+
+    private static function startDocs(Array $parameters) {
+        
+        list($type, $value) = count($parameters) == 2 ?  : ['none', 'none'];
+
+        include __DIR__ . '/../assets/html/docs-header.php';
+
+        if (count($parameters) == 2) {
+
+            list($type, $value) = $parameters;
+            
+            switch($type) {
+                case 'resources':
+                case 'resource':
+                case 'search':
+                    include __DIR__ . '/../assets/html/docs-body-' . $type . '.php';
+                    break;
+                default:
+                    include __DIR__ . '/../assets/html/docs-body-notfound.php';
+            };
+
+        } else if (count($parameters) == 0) {
+
+            include __DIR__ . '/../assets/html/docs-body-welcome.php';
+
+        } else {
+
+            include __DIR__ . '/../assets/html/docs-body-notfound.php';
+
+        };        
+
+        include __DIR__ . '/../assets/html/docs-footer.php';
+		
+	}
 
 }

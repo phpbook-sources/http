@@ -33,6 +33,38 @@
 * 
 * ******************************************/
 
+//APP name
+//Default null
+\PHPBook\Http\Configuration\Meta::setName('APP');
+
+//APP version
+//Default null
+\PHPBook\Http\Configuration\Meta::setVersion('1.0');
+
+//Contact e-mail.
+//Default null
+\PHPBook\Http\Configuration\Meta::setEmail('contact@app.com');
+
+//Contact phone.
+//Default null
+\PHPBook\Http\Configuration\Meta::setPhone('99 9999-9999');
+
+//Prefix router to access the docs, http://localhost/docs/
+//Default "docs"
+\PHPBook\Http\Configuration\Directory::setDocs('docs');
+
+//Prefix router to access the api, http://localhost/api/....
+//Default "app"
+\PHPBook\Http\Configuration\Directory::setApp('app');
+
+//Primary color theme to docs page. 
+//Default #5e96c5
+\PHPBook\Http\Configuration\Docs::setPrimaryColor('#5e96c5');
+
+//Secondary color theme to docs page. 
+//Default #28436b
+\PHPBook\Http\Configuration\Docs::setSecondaryColor('#28436b');
+
 //Output for structured data response. JSON or XML. 
 //Not used in buffer dispatch.
 //Default "json"
