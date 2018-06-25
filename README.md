@@ -57,14 +57,6 @@
 //Default "app"
 \PHPBook\Http\Configuration\Directory::setApp('app');
 
-//Primary color theme to docs page. 
-//Default #5e96c5
-\PHPBook\Http\Configuration\Docs::setPrimaryColor('#5e96c5');
-
-//Secondary color theme to docs page. 
-//Default #28436b
-\PHPBook\Http\Configuration\Docs::setSecondaryColor('#28436b');
-
 //Output for structured data response. JSON or XML. 
 //Not used in buffer dispatch.
 //Default "json"
