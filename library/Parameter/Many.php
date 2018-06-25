@@ -1,0 +1,45 @@
+<?php namespace PHPBook\Http\Parameter;
+
+class Many extends \PHPBook\Http\Parameter {    
+
+    private $elementClass;
+
+    public function __construct(String $elementClass, String $description) {
+        $this->setElementClass($elementClass);
+        $this->setDescription($description);
+    }
+
+    public function getElementClass(): String {
+        return $this->elementClass;
+    }
+
+    public function setElementClass(String $elementClass): Many {
+        $this->elementClass = $elementClass;
+        return $this;
+    }
+
+    public function intercept(Array $rules, $value) {
+        $items = [];
+        if (is_array($value)) {
+            foreach($value as $item) {
+                $items[] = (new One($this->getElementClass(), 'Item'))->intercept($rules, $item);
+            };
+        };
+        return $items;
+    }
+
+	public function schema(Array $rules) {
+		$schema = new \StdClass;
+		$schema->description = $this->getDescription();
+		$schema->type = '@ManyOf';
+		$schema->schema = new \StdClass;
+		$elementClass = $this->getElementClass();
+        foreach((new $elementClass)->getParameters() as $name => $parameter) {	
+			if ($this->hasInRule($rules, $name)) {
+				$schema->schema->{$name} = $parameter->schema($this->nestRules($rules, $name));
+			};
+        };		
+        return $schema;
+	}
+	
+}
