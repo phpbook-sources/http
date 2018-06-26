@@ -6,6 +6,8 @@ abstract class Directory {
 
     private static $app = 'app';
 
+    private static $default = 'docs';
+
     public static function setDocs(String $docs) {
         Static::$docs = $docs;
     }
@@ -20,6 +22,14 @@ abstract class Directory {
 
     public static function getApp(): String {
         return Static::$app;
+    }
+
+    public static function setDefault(String $default) {
+        Static::$default = $default;
+    }
+
+    public static function getDefault(): String {
+        return Static::$default;
     }
 
 }

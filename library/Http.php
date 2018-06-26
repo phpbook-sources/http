@@ -12,19 +12,27 @@ abstract class Http {
 
         $parameters = array_values(array_diff($requestUri, $directory));
 
-        $path = array_shift($parameters);
+        if (count($parameters)) {
 
-        if ($path == Configuration\Directory::getApp()) {
+            $path = array_shift($parameters);
 
-            Static::startApp($parameters);
+            if ($path == Configuration\Directory::getApp()) {
 
-        } else if ($path == Configuration\Directory::getDocs()) {
+                Static::startApp($parameters);
 
-            Static::startDocs($parameters);
+            } else if ($path == Configuration\Directory::getDocs()) {
+
+                Static::startDocs($parameters);
+
+            } else {
+
+                Dispatch::exception('not found', 404);
+
+            };
 
         } else {
-
-            Dispatch::exception('not found', 404);
+            
+            header('location:' . Configuration\Directory::getDefault());
 
         };
         

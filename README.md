@@ -53,9 +53,13 @@
 //Default "docs"
 \PHPBook\Http\Configuration\Directory::setDocs('docs');
 
-//Prefix router to access the api, http://localhost/api/....
+//Prefix router to access the app, http://localhost/app/....
 //Default "app"
 \PHPBook\Http\Configuration\Directory::setApp('app');
+
+//Default router, http://localhost/docs/
+//Default "docs"
+\PHPBook\Http\Configuration\Directory::setDefault('docs');
 
 //Output for structured data response. JSON or XML. 
 //Not used in buffer dispatch.
