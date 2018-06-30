@@ -39,7 +39,7 @@ abstract class Http {
             };
 
         } catch(\Exception $exception) {
-            exit('asdas');
+            
             Dispatch::exception($exception->getMessage());
 
         };
