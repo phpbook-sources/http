@@ -167,31 +167,6 @@ foreach($parameters as $name => $parameter) {
 	$description = $parameter->getDescription();
 };
 
-/*********************************************
-* 
-*  Work With Element Query Manually
-* 
-* *******************************************/
-
-$element = 'CustomerElement';
-
-$description = 'Customer Description';
-
-$rules = ['only' => ['name']];
-
-$user = new \StdClass;
-$user->name = 'Jhon';
-
-//Get query with ony element
-$query = new \PHPBook\Http\Query(new \PHPBook\Http\Parameter\One($element, $description), $rules);
-$query->schema(); //get element schema recursively following the rules
-$query->intercept($user); //get element with data according to the schema recursively following the rules
-
-//Get query with many of element
-$query = new \PHPBook\Http\Query(new \PHPBook\Http\Parameter\Many($element, $description), $rules);
-$query->schema(); //get element schema recursively following the rules
-$query->intercept([$user]); //get element with data according to the schema recursively following the rules
-
 ?>
 ```
 
