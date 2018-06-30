@@ -211,6 +211,8 @@ class CustomerController {
 	public function post($inputs, $output) {
 
 		//inside the $inputs primitive values, the whitespace are stripped from the beginning and end
+		//values non defined by user, will be defined null
+		//extra values defined by user, will be ignored
 
 		$customer = new stdClass();
 		$customer->id = 10;
@@ -227,6 +229,8 @@ class CustomerController {
 	public function put($inputs, $output) {
 
 		//inside the $inputs primitive values, the whitespace are stripped from the beginning and end
+		//values non defined by user, will be defined null
+		//extra values defined by user, will be ignored
 
 		//get by $inputs->uri->id to edit;
 
@@ -242,6 +246,8 @@ class CustomerController {
 	public function get($inputs, $output) {
 
 		//inside the $inputs primitive values, the whitespace are stripped from the beginning and end
+		//values non defined by user, will be defined null
+		//extra values defined by user, will be ignored
 
 		//get by $inputs->uri->id;
 
@@ -257,6 +263,8 @@ class CustomerController {
 	public function query($inputs, $output) {
 
 		//inside the $inputs primitive values, the whitespace are stripped from the beginning and end
+		//values non defined by user, will be defined null
+		//extra values defined by user, will be ignored
 
 		$customers = [];
 
@@ -279,7 +287,9 @@ class CustomerController {
 	public function photo($inputs, $output) {
 
 		//inside the $inputs primitive values, the whitespace are stripped from the beginning and end
-		
+		//values non defined by user, will be defined null
+		//extra values defined by user, will be ignored
+
 		//get by $inputs->uri->id;
 		//the $inputs->uri->alias is a practice that you can use just to control cache request;
 		//you do not need use $inputs->uri->alias to get the file
@@ -298,7 +308,9 @@ class CustomerController {
 	public function delete($inputs, $output) {
 
 		//inside the $inputs primitive values, the whitespace are stripped from the beginning and end
-
+		//values non defined by user, will be defined null
+		//extra values defined by user, will be ignored
+		
 		//get $inputs->header->{'My-Key'} to authentication;
 		//get by $inputs->uri->id to delete;
 		
