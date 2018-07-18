@@ -46,11 +46,19 @@
 
 						<div class="menu">
 
-							<?php foreach (\PHPBook\Http\Request::getCategories() as $key => $category): ?>
-								<div class="link">
-									<a href="<?php echo $path; ?><?php echo \PHPBook\Http\Configuration\Directory::getDocs(); ?>/resources/<?php echo $key; ?>" title="<?php echo $category->getName(); ?>"><?php echo $category->getName(); ?></a>
-								</div>
-							<?php endforeach; ?>
+							<?php if (count(\PHPBook\Http\Request::getCategories()) > 0): ?>
+
+								<?php foreach (\PHPBook\Http\Request::getCategories() as $key => $category): ?>
+									<div class="link">
+										<a href="<?php echo $path; ?><?php echo \PHPBook\Http\Configuration\Directory::getDocs(); ?>/resources/<?php echo $key; ?>" title="<?php echo $category->getName(); ?>"><?php echo $category->getName(); ?></a>
+									</div>
+								<?php endforeach; ?>
+
+							<?php else: ?>
+
+								<strong>There is no Resources!</strong>
+
+							<?php endif; ?>
 
 						</div>
 						
