@@ -5,10 +5,10 @@
 	* [Declare Configurations](#declare-configurations)
 	* [Declare Application Elements](#declare-application-elements)
 	* [Declare Application Controllers](#declare-application-controllers)
-	* [Register Application Request Categories](#register-application-request-categories)
-	* [Register Application Request Resources](#register-application-request-resources)
-	* [Http URI Get Path](#http-uri-get-path)
+	* [Generate Request Proxies](#generate-request-proxies)
+	* [Start Request Proxies](#start-request-proxies)
 	* [Start Application Http](#start-application-http)
+	* [Http URI Get Path](#http-uri-get-path)
 	* [Application Apache htaccess File](#application-apache-htaccess-file)
 	* [Application Nginx File](#application-nginx-file)
 
@@ -75,6 +75,19 @@
 //Default ['type' => 'success', 'content' => '@']
 //Dispatch using the output Type
 \PHPBook\Http\Configuration\Output::setContent(['type' => 'success', 'content' => '@']);	
+
+//Controllers path, the phpbook will load all controllers by folders recursively inside
+//Default null. But its required to set if you want use phpbook http.
+\PHPBook\Http\Configuration\Request::setControllersPathRoot('app\controllers');
+
+//Controllers proxies path, the phpbook will generate the proxies based on controllers
+//Default null. But its required to set if you want use phpbook http.
+\PHPBook\Http\Configuration\Request::setProxiesPathRoot('proxies');
+
+//Controllers proxies namespace, the phpbook will generate the proxies classes using this namespace
+//Default null. But its required to set if you want use phpbook http.
+\PHPBook\Http\Configuration\Request::setProxiesNamespace('App\Controllers');
+
 
 ?>
 ```
@@ -149,28 +162,12 @@ class CustomerElement extends \PHPBook\Http\Element {
 
 }
 
-/*********************************************
-* 
-*  Get Elements Parameters
-* 
-* *******************************************/
-
-//Get one parameter
-$customer = new CustomerElement;
-$parameter = $customer->getParameter('name');
-$parameter->getDescription();
-
-//Get all parameters
-$customer = new CustomerElement;
-$parameters = $customer->getParameters();
-foreach($parameters as $name => $parameter) {
-	$description = $parameter->getDescription();
-};
-
 ?>
 ```
 
 ##### Declare Application Controllers
+
+PHPBook Http uses docs notations to declare request resources.
 
 ```php
 <?php 
@@ -181,8 +178,24 @@ foreach($parameters as $name => $parameter) {
 * 
 * *******************************************/
 
+/**
+ * @PHPBookHttpRequestCategory{
+ *      "setCode": "'customerCategory'"
+ *      "setName": "'Customer Category'"
+ * }
+ */
 class CustomerController {
 
+	/**
+	 * @PHPBookHttpRequestResource{
+	 *      "setCategoryCode": "'customerCategory'"
+	 *      "setUri": "'customer/post'"
+	 * 		"setNotes": "'Any important note'"
+	 * 		"setType": "'post'"
+	 * 		"setInputBody": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['except' => ['id']]"
+	 * 		"setOutput": "'\PHPBook\Http\Parameter\One', 'CustomerElement', []"
+	 * }
+	 */
 	public function post($inputs, $output) {
 
 		//inside the $inputs primitive values, the whitespace are stripped from the beginning and end
@@ -201,6 +214,18 @@ class CustomerController {
 
 	}
 
+
+	/**
+	 * @PHPBookHttpRequestResource{
+	 *      "setCategoryCode": "'customerCategory'"
+	 *      "setUri": "'customer/put/:id'"
+	 * 		"setNotes": "'Any important note'"
+	 * 		"setType": "'put'"
+	 * 		"setInputUri": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']]"
+	 * 		"setInputBody": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['except' => ['id']]"
+	 * 		"setOutput": "'\PHPBook\Http\Parameter\One', 'CustomerElement', []"
+	 * }
+	 */
 	public function put($inputs, $output) {
 
 		//inside the $inputs primitive values, the whitespace are stripped from the beginning and end
@@ -218,6 +243,16 @@ class CustomerController {
 		return $output->intercept($customer);
 	}
 
+	/**
+	 * @PHPBookHttpRequestResource{
+	 *      "setCategoryCode": "'customerCategory'"
+	 *      "setUri": "'customer/get/:id'"
+	 * 		"setNotes": "'Any important note'"
+	 * 		"setType": "'get'"
+	 * 		"setInputUri": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']]"
+	 * 		"setOutput": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['except' => ['id', 'friends.id']]"
+	 * }
+	 */
 	public function get($inputs, $output) {
 
 		//inside the $inputs primitive values, the whitespace are stripped from the beginning and end
@@ -235,6 +270,17 @@ class CustomerController {
 
 	}
 
+	/**
+	 * @PHPBookHttpRequestResource{
+	 *      "setCategoryCode": "'customerCategory'"
+	 *      "setUri": "'customer/query'"
+	 * 		"setNotes": "'Any important note'"
+	 * 		"setType": "'get'"
+	 * 		"setInputQuery": "'\PHPBook\Http\Parameter\One', 'CustomerQueryElement', []"
+	 * 		"setInputUri": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']]"
+	 * 		"setOutput": "'\PHPBook\Http\Parameter\One', 'CustomerElement', []"
+	 * }
+	 */
 	public function query($inputs, $output) {
 
 		//inside the $inputs primitive values, the whitespace are stripped from the beginning and end
@@ -259,6 +305,17 @@ class CustomerController {
 	
 	}
 
+	/**
+	 * @PHPBookHttpRequestResource{
+	 *      "setCategoryCode": "'customerCategory'"
+	 *      "setUri": "'customer/get/:id/photo/:alias'"
+	 * 		"setNotes": "'Any important note'"
+	 * 		"setType": "'get'"
+	 * 		"setInputUri": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']]"
+	 * 		"setIsBufferOutput": "true"
+	 * 		"setCacheHours": "72"
+	 * }
+	 */
 	public function photo($inputs, $output) {
 
 		//inside the $inputs primitive values, the whitespace are stripped from the beginning and end
@@ -280,6 +337,16 @@ class CustomerController {
 	
 	}
 
+	/**
+	 * @PHPBookHttpRequestResource{
+	 *      "setCategoryCode": "'customerCategory'"
+	 *      "setUri": "'customer/delete/:id'"
+	 * 		"setNotes": "'Any important note'"
+	 * 		"setType": "'delete'"
+	 * 		"setInputHeader": "'\PHPBook\Http\Parameter\One', 'AuthenticationElement', []"
+	 * 		"setInputUri": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']]"
+	 * }
+	 */
 	public function delete($inputs, $output) {
 
 		//inside the $inputs primitive values, the whitespace are stripped from the beginning and end
@@ -298,126 +365,61 @@ class CustomerController {
 ?>
 ```
 
-##### Register Application Request Categories
+##### Generate Request Proxies
 
 ```php
 <?php
 
 /***************************************************
 * 
-*  Register Application Request Categories
+*  Generate Request Proxies
 * 
 * *************************************************/
 
-\PHPBook\Http\Request::setCategory((new \PHPBook\Http\Category)
-	->setCode('customerCategory')
-	->setName('Customers Resources'));
+/* You must generate or re-generate de proxy file when create or change controllers notations */
 
+/* You cannot start http without proxies */
 
-/***************************************************
-* 
-*  Get All Application Request Categories
-* 
-* *************************************************/
-
-$categories = \PHPBook\Http\Request::getCategories();
-
-foreach($categories as $category) {
-	$code = $category->getCode();
-	$name = $category->getName();
-};
+\PHPBook\Http\Proxy::generate();
 
 ?>
 ```
 
-##### Register Application Request Resources
+##### Start Request Proxies
 
 ```php
 <?php
 
 /***************************************************
 * 
-*  Register Application Request Resources
+*  Start Request Proxies
 * 
 * *************************************************/
 
-\PHPBook\Http\Request::setResource((new \PHPBook\Http\Resource())
-	->setCategoryCode('customerCategory')
-	->setUri('customer/post')
-	->setNotes('Any important note')
-	->setType('post')
-	->setInputBody('\PHPBook\Http\Parameter\One', 'CustomerElement', ['except' => ['id']])
-	->setController('CustomerController', 'post')
-	->setOutput('\PHPBook\Http\Parameter\One', 'CustomerElement', []));
+/* You must start proxies before start the http */
 
-\PHPBook\Http\Request::setResource((new \PHPBook\Http\Resource)
-	->setCategoryCode('customerCategory')
-	->setUri('customer/put/:id')
-	->setNotes('Any important note')
-	->setType('put')
-	->setInputUri('\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']])
-	->setInputBody('\PHPBook\Http\Parameter\One', 'CustomerElement', ['except' => ['id']])
-	->setController('CustomerController', 'put')
-	->setOutput('\PHPBook\Http\Parameter\One', 'CustomerElement', []));
+\PHPBook\Http\Proxy::start();
 
-\PHPBook\Http\Request::setResource((new \PHPBook\Http\Resource())
-	->setCategoryCode('customerCategory')
-	->setUri('customer/get/:id')
-	->setNotes('Any important note')
-	->setType('get')
-	->setInputUri('\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']])
-	->setController('CustomerController', 'get')
-	->setOutput('\PHPBook\Http\Parameter\One', 'CustomerElement', ['except' => ['id', 'friends.id']]));
+?>
+```
 
-\PHPBook\Http\Request::setResource((new \PHPBook\Http\Resource())
-	->setCategoryCode('customerCategory')
-	->setUri('customer/query')
-	->setInputQuery('\PHPBook\Http\Parameter\One', 'CustomerQueryElement', [])
-	->setNotes('Any important note')
-	->setType('get')
-	->setController('CustomerController', 'query')
-	->setOutput('\PHPBook\Http\Parameter\Many', 'CustomerElement', []));
+##### Start Application Http
 
-\PHPBook\Http\Request::setResource((new \PHPBook\Http\Resource())
-	->setCategoryCode('customerCategory')
-	->setUri('customer/get/:id/photo/:alias')
-	->setNotes('Any important note')
-	->setType('get')
-	->setInputUri('\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']])
-	->setController('CustomerController', 'photo')
-	->setIsBufferOutput(true)
-	->setCacheHours(72));
-
-\PHPBook\Http\Request::setResource((new \PHPBook\Http\Resource())
-	->setCategoryCode('customerCategory')
-	->setUri('customer/delete/:id')
-	->setNotes('Any important note with authentication')
-	->setType('delete')
-	->setInputHeader('\PHPBook\Http\Parameter\One', 'AuthenticationElement', [])
-	->setInputUri('\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']])
-	->setController('CustomerController', 'delete'));
+```php
+<?php
 
 /***************************************************
 * 
-*  Get All Application Request Resources
+*  Start Application Http
 * 
 * *************************************************/
 
-$resources = \PHPBook\Http\Request::getResources();
+/* FILE index.php */
 
-foreach($resources as $resource) {
-	$categoryCode = $resource->getCategoryCode();
-	$uri = $resource->getUri();
-	$notes = $resource->getNotes();
-	$type = $resource->getType();
-	list($inputHeaderType, $inputHeaderElement, $inputHeaderRules) = $resource->getInputHeader();
-	list($inputUriType, $inputUriElement, $inputUriRules) = $resource->getInputUri();
-	list($inputQueryType, $inputQueryElement, $inputQueryRules) = $resource->getInputQuery();
-	list($inputBodyType, $inputBodyElement, $inputBodyRules) = $resource->getInputBody();
-	list($controller, $method) = $resource->getController();
-	list($outputType, $outputElement, $outputRules) = $resource->getOutput();
-	$isBufferOutput = $resource->getIsBufferOutput();
-	$cacheHours = $resource->getCacheHours();
+if (!\PHPBook\Http\Script::isConsole()) {
+
+	\PHPBook\Http\Http::start();
+
 };
 
 ?>
@@ -438,29 +440,6 @@ foreach($resources as $resource) {
 $base = \PHPBook\Http\Url::get();
 
 $resource = \PHPBook\Http\Url::get('customer/get/2');
-
-?>
-```
-
-##### Start Application Http
-
-```php
-<?php
-
-/***************************************************
-* 
-*  Start Application Http
-* 
-* *************************************************/
-
-/* FILE index.php*/
-
-//check the script is not running in console
-if (!\PHPBook\Http\Script::isConsole()) {
-
-	\PHPBook\Http\Http::start();
-
-};
 
 ?>
 ```

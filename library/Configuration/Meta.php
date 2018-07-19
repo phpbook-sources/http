@@ -2,13 +2,13 @@
 
 abstract class Meta {
     
-    private static $name;
+    private static $name = null;
 
-    private static $version;
+    private static $version = null;
 
-    private static $email;
+    private static $email = null;
 
-    private static $phone;
+    private static $phone = null;
 
     public static function setName(String $name) {
         Static::$name = $name;
