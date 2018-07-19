@@ -2,6 +2,8 @@
 
 abstract class Proxy {    
 
+    private static $started = false;
+
     public static function generate() {
         
         $phpClasses = [];
@@ -109,7 +111,13 @@ abstract class Proxy {
 
         if (class_exists($classProxy)) {
 
-            $classProxy::init();
+            if (!Static::$started) {
+
+                Static::$started = true;
+
+                $classProxy::init();
+                
+            };
 
         };
 
