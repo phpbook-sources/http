@@ -235,6 +235,11 @@
         .side-menu {
             width: 100%;
             min-height: auto;
+            padding-bottom: 6px;
+            float: none;
+            -webkit-box-shadow: 0px 8px 8px -6px rgba(0,0,0,0.75);
+            -moz-box-shadow: 0px 8px 8px -6px rgba(0,0,0,0.75);
+            box-shadow: 0px 8px 8px -6px rgba(0,0,0,0.75);
         }
         .side-content {
             float: none;
