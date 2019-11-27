@@ -35,6 +35,8 @@
     }
     .page {
         display: flex;
+        min-height: 100vh;
+        background-color: #f9f9f9;
     }
     .side-menu {
         width: 260px;
@@ -241,11 +243,17 @@
             -moz-box-shadow: 0px 8px 8px -6px rgba(0,0,0,0.75);
             box-shadow: 0px 8px 8px -6px rgba(0,0,0,0.75);
         }
+        .side-menu .container .title, .side-menu .container .title a, .side-menu .container .title a:hover {
+            margin-top: 0px;
+        }
         .side-content {
             float: none;
         }
         .side-content .top-bar {
             display: none;
+        }
+        .side-content .content {
+            margin-top: 0px;
         }
         .side-content .content .container .fieldset .data {
             overflow: auto;
