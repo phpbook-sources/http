@@ -13,6 +13,8 @@
 
                 <?php foreach (\PHPBook\Http\Request::getResources() as $key => $resource): ?>
 
+                    <?php if ($resource->getCategoryCode() != $category->getCode()) {continue;}; ?>
+
                     <div class="subtitle">
                         <?php echo $resource->getUri(); ?>
                     </div>
