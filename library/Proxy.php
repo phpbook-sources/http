@@ -41,7 +41,7 @@ abstract class Proxy {
             preg_match_all('/@PHPBookHttpRequestCategory{(.*?)}/s', $rc->getDocComment(), $matches);
 
             foreach($matches[1] as $item) {
-                preg_match_all('(["]+[\w]+["]:[\s]*["]+["a-zA-Z\'\d\s"]+["])', $item, $layoutPattern);
+                preg_match_all('(["]+[\w]+["]:[\s]*["].+["])', $item, $layoutPattern);
                 $attributes = json_decode('{' . str_replace('\\', "\\\\", implode(',', $layoutPattern[0])) . '}');
                 if ($attributes) {
                     $classesProxies .= "\t" . "\t" . '\PHPBook\Http\Request::setCategory((new \PHPBook\Http\Category)' . PHP_EOL;
