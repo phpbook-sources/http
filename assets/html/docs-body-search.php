@@ -42,9 +42,23 @@
                 <div class="data">
                     <xmp><?php
                         list($type, $element, $rules) = $resource->getInputUri();
-                        $inputUri = new \PHPBook\Http\Query(new $type($element, 'Output'), $rules);
+                        $inputUri = new \PHPBook\Http\Query(new $type($element, 'InputURI'), $rules);
                         echo \PHPBook\Http\Dispatch::schema($inputUri->schema());?></xmp>
-                </div>							
+                </div>                          
+            </div>
+        <?php endif; ?>
+
+        <?php if ($resource->getInputHeader()): ?>
+            <div class="fieldset">
+                <div class="name">
+                    Header Input
+                </div>
+                <div class="data">
+                    <xmp><?php
+                        list($type, $element, $rules) = $resource->getInputHeader();
+                        $inputHeader = new \PHPBook\Http\Query(new $type($element, 'InputHeader'), $rules);
+                        echo \PHPBook\Http\Dispatch::schema($inputHeader->schema());?></xmp>
+                </div>
             </div>
         <?php endif; ?>
 
@@ -56,9 +70,9 @@
                 <div class="data">
                     <xmp><?php
                         list($type, $element, $rules) = $resource->getInputBody();
-                        $inputBody = new \PHPBook\Http\Query(new $type($element, 'Output'), $rules);
+                        $inputBody = new \PHPBook\Http\Query(new $type($element, 'InputBody'), $rules);
                         echo \PHPBook\Http\Dispatch::schema($inputBody->schema());?></xmp>
-                </div>							
+                </div>                          
             </div>
         <?php endif; ?>
 
