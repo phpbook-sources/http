@@ -33,6 +33,10 @@ class Query {
 		return $this->getParameter()->intercept($this->getRules(), $values);
     }
 
+    public function standard($values) {
+        return $this->getParameter()->standard($this->getRules(), $values);
+    }
+
     public function schema() {
         return $this->getParameter()->schema($this->getRules());
     }

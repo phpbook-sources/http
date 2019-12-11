@@ -4,9 +4,10 @@ class Many extends \PHPBook\Http\Parameter {
 
     private $elementClass;
 
-    public function __construct(String $elementClass, String $description) {
+    public function __construct(String $elementClass, String $description, ?String $method = null) {
         $this->setElementClass($elementClass);
         $this->setDescription($description);
+        $this->setMethod($method);
     }
 
     public function getElementClass(): String {
@@ -16,6 +17,14 @@ class Many extends \PHPBook\Http\Parameter {
     public function setElementClass(String $elementClass): Many {
         $this->elementClass = $elementClass;
         return $this;
+    }
+
+    public function standard(Array $rules, $value) {
+        $items = [];
+        foreach($value as $item) {
+            $items[] = (new One($this->getElementClass(), 'Item'))->standard($rules, $item);
+        };
+        return $items;
     }
 
     public function intercept(Array $rules, $value) {

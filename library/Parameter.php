@@ -1,8 +1,12 @@
 <?php namespace PHPBook\Http;
 
-abstract class Parameter {    
+use PHPBook\Http\Parameter\One;
+
+abstract class Parameter {
 
     private $description;
+
+    private $method;
     
     public function getDescription(): String {
         return $this->description;
@@ -10,6 +14,15 @@ abstract class Parameter {
 
     public function setDescription(String $description): Parameter {
         $this->description = $description;
+        return $this;
+    }
+
+    public function getMethod(): ?String {
+        return $this->method;
+    }
+
+    public function setMethod(?String $method): Parameter {
+        $this->method = $method;
         return $this;
     }
 

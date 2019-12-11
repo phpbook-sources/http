@@ -16,5 +16,5 @@ abstract class Element {
     public function getParameters(): Array {
         return $this->parameters;
     }
-
+    
 }

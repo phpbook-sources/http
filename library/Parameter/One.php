@@ -2,11 +2,12 @@
 
 class One extends \PHPBook\Http\Parameter {    
 
-    private $element;
+    private $elementClass;
 
-    public function __construct(String $elementClass, String $description) {
+    public function __construct(String $elementClass, String $description, ?String $method = null) {
         $this->setElementClass($elementClass);
         $this->setDescription($description);
+        $this->setMethod($method);
     }
 
     public function getElementClass(): String {
@@ -16,6 +17,30 @@ class One extends \PHPBook\Http\Parameter {
     public function setElementClass(String $elementClass): One {
         $this->elementClass = $elementClass;
         return $this;
+    }
+
+    public function standard(Array $rules, $value) {
+        $item = new \StdClass;
+        $elementClass = $this->getElementClass();
+        foreach((new $elementClass)->getParameters() as $name => $parameter) {
+            if ($this->hasInRule($rules, $name)) {
+                if (is_object($value)) {
+                    if ($parameter->getMethod()) {
+                        $parser = $value->{$parameter->getMethod()}();
+                    } else {
+                        $parser = $value->{$name};
+                    };
+                } else {
+                    $parser = null;
+                };
+                if ($parser) {
+                    $item->{$name} = $parameter->standard($this->nestRules($rules, $name), $parser);
+                } else {
+                    $item->{$name} = $parser;
+                };
+            };
+        };
+        return $item;
     }
 
     public function intercept(Array $rules, $value) {

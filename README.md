@@ -162,6 +162,20 @@ class CustomerElement extends \PHPBook\Http\Element {
 
 }
 
+class EncapsulationBeanElement extends \PHPBook\Http\Element {
+
+	public function __construct() {
+
+		$this->setParameter('id', new \PHPBook\Http\Parameter\Value('customer id description', 'getId'));
+		$this->setParameter('name', new \PHPBook\Http\Parameter\Value('customer name description', 'getName'));
+		$this->setParameter('age', new \PHPBook\Http\Parameter\Value('customer age description', 'getAge'));
+		$this->setParameter('friends', new \PHPBook\Http\Parameter\Many('FriendElement', 'all friends', 'getFriends'));
+		$this->setParameter('bestFriend', new \PHPBook\Http\Parameter\One('FriendElement', 'best friend', 'getBestFriend'));
+
+	}
+
+}
+
 ?>
 ```
 
@@ -268,6 +282,21 @@ class CustomerController {
 		//inside the $output primitive values, the whitespace are stripped from the beginning and end
 		return $output->intercept($customer);
 
+
+		//or if using an output element with encapsulation....
+
+		//using an element with encapsulation(EncapsulationBeanElement in this case) method mapped, you can get a standard class of that object
+		//very useful for database entities that you cant access the attributes directly for example.
+		$customer = new MyCustomerBean();
+		$customer->getId();
+		$customer->getName();
+
+		$customerStdclass = $output->standard($customer);
+		$customerStdclass->id;
+		$customerStdclass->name;
+
+		return $output->intercept($customerStdclass);
+
 	}
 
 	/**
@@ -277,7 +306,6 @@ class CustomerController {
 	 * 		"setNotes": "'Any important note'"
 	 * 		"setType": "'get'"
 	 * 		"setInputQuery": "'\PHPBook\Http\Parameter\One', 'CustomerQueryElement', []"
-	 * 		"setInputUri": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']]"
 	 * 		"setOutput": "'\PHPBook\Http\Parameter\One', 'CustomerElement', []"
 	 * }
 	 */
@@ -312,6 +340,7 @@ class CustomerController {
 	 * 		"setNotes": "'Any important note'"
 	 * 		"setType": "'get'"
 	 * 		"setInputUri": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']]"
+	 * 		"setOutput": "'\PHPBook\Http\Parameter\One', 'CustomerElement', []"
 	 * 		"setIsBufferOutput": "true"
 	 * 		"setCacheHours": "72"
 	 * }
@@ -327,13 +356,11 @@ class CustomerController {
 		//you do not need use $inputs->uri->alias to get the file
 		//$inputs->uri->alias can be the current file name or any other name.
 
-		$customer = new stdClass();
-		
-		$customer->photo = '@data-buffer-here';
-
 		$buffer = $customer->photo;
 
 		return $buffer;
+
+		//or
 	
 	}
 

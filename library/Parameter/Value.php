@@ -2,11 +2,16 @@
 
 class Value extends \PHPBook\Http\Parameter {    
 
-    public function __construct(String $description) {
+    public function __construct(String $description, ?String $method = null) {
         $this->setDescription($description);
+        $this->setMethod($method);
     }
-    
+
     public function intercept(Array $rules, $value) {
+        return trim($value);
+    }
+
+    public function standard(Array $rules, $value) {
         return trim($value);
     }
 
