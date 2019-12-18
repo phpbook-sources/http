@@ -26,6 +26,8 @@ abstract class Parameter {
         return $this;
     }
 
+    public abstract function empty();
+
     public abstract function intercept(Array $rules, $value);
 	
 	public abstract function schema(Array $rules);

@@ -27,6 +27,10 @@ class Many extends \PHPBook\Http\Parameter {
         return $items;
     }
 
+    public function empty() {
+        return [];
+    }
+
     public function intercept(Array $rules, $value) {
         $items = [];
         if (is_array($value)) {

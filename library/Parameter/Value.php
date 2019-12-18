@@ -7,6 +7,10 @@ class Value extends \PHPBook\Http\Parameter {
         $this->setMethod($method);
     }
 
+    public function empty() {
+        return null;
+    }
+
     public function intercept(Array $rules, $value) {
         return trim($value);
     }

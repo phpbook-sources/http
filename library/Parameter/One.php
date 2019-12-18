@@ -43,6 +43,10 @@ class One extends \PHPBook\Http\Parameter {
         return $item;
     }
 
+    public function empty() {
+        return null;
+    }
+
     public function intercept(Array $rules, $value) {
 		$item = new \StdClass;
 		$elementClass = $this->getElementClass();
@@ -53,7 +57,7 @@ class One extends \PHPBook\Http\Parameter {
 				if ($parser) {
 					$item->{$name} = $parameter->intercept($this->nestRules($rules, $name), $parser);
 				} else {
-					$item->{$name} = $parser;
+					$item->{$name} = $parameter->empty();
 				};
 			};
         };	
