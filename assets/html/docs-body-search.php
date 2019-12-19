@@ -34,6 +34,31 @@
             </div>							
         </div>
 
+         <?php if ($resource->getMiddlewareCode()): ?>
+            <div class="fieldset">
+                <div class="name">
+                    Header Input
+                </div>
+                <div class="data">
+                    <?php
+                        $middlewareCodeParts = explode(':', $resource->getMiddlewareCode());
+                        if (count($middlewareCodeParts) > 1) {
+                            list($middlewareCode, $middlewareParameters) = explode(':', $resource->getMiddlewareCode());
+                        } else {
+                            list($middlewareCode) = explode(':', $resource->getMiddlewareCode());
+                            $middlewareParameters = null;
+                        };
+                        $middleware = \PHPBook\Http\Request::getMiddlewareSchema($middlewareCode);
+                        if ($middleware) {
+                        echo $middleware->getName() . '<br />';
+                        echo (count($middlewareParameters) > 0) ? '<strong>internal middleware parameters</strong> [' . $middlewareParameters . ']': '';
+                        list($type, $element, $rules) = $middleware->getInputHeader();
+                        $inputHeader = new \PHPBook\Http\Query(new $type($element, 'InputHeader'), $rules);
+                        echo '<xmp>' . \PHPBook\Http\Dispatch::schema($inputHeader->schema()) . '</xmp>';}?>
+                </div>
+            </div>
+        <?php endif; ?>
+
         <?php if ($resource->getInputUri()): ?>
             <div class="fieldset">
                 <div class="name">
@@ -45,20 +70,6 @@
                         $inputUri = new \PHPBook\Http\Query(new $type($element, 'InputURI'), $rules);
                         echo \PHPBook\Http\Dispatch::schema($inputUri->schema());?></xmp>
                 </div>                          
-            </div>
-        <?php endif; ?>
-
-        <?php if ($resource->getInputHeader()): ?>
-            <div class="fieldset">
-                <div class="name">
-                    Header Input
-                </div>
-                <div class="data">
-                    <xmp><?php
-                        list($type, $element, $rules) = $resource->getInputHeader();
-                        $inputHeader = new \PHPBook\Http\Query(new $type($element, 'InputHeader'), $rules);
-                        echo \PHPBook\Http\Dispatch::schema($inputHeader->schema());?></xmp>
-                </div>
             </div>
         <?php endif; ?>
 

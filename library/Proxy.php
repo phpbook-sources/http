@@ -38,6 +38,21 @@ abstract class Proxy {
 
             $rc = new \ReflectionClass($phpClass);
 
+            preg_match_all('/@PHPBookHttpMiddleware{(.*?)}/s', $rc->getDocComment(), $matches);
+
+            foreach($matches[1] as $item) {
+                preg_match_all('(["]+[\w]+["]:[\s]*["].+["])', $item, $layoutPattern);
+                $attributes = json_decode('{' . str_replace('\\', "\\\\", implode(',', $layoutPattern[0])) . '}');
+                if ($attributes) {
+                    $classesProxies .= "\t" . "\t" . '\PHPBook\Http\Request::setMiddleware((new \PHPBook\Http\Middleware)' . PHP_EOL;
+                    foreach($attributes as $attribute => $value) {
+                        $classesProxies .= "\t" . "\t" . "\t" . '->' . $attribute . '(' . $value . ')' . PHP_EOL;
+                    };
+                    $classesProxies .= "\t" . "\t" . "\t" . '->' . 'setMiddleware' . '(\'' . $phpClass . '\')' . PHP_EOL;
+                    $classesProxies .= "\t" . "\t" . ');' . PHP_EOL . PHP_EOL;
+                };
+            };
+
             preg_match_all('/@PHPBookHttpRequestCategory{(.*?)}/s', $rc->getDocComment(), $matches);
 
             foreach($matches[1] as $item) {

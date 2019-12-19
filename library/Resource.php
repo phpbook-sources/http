@@ -4,13 +4,13 @@ class Resource {
     
 	private $categoryCode;
 
+    private $middlewareCode;
+
     private $uri;
 
     private $notes;
 
     private $type;
-
-    private $inputHeader;
     
     private $inputUri;
 
@@ -33,6 +33,15 @@ class Resource {
 
     public function getCategoryCode(): ?String {
         return $this->categoryCode;
+    }
+
+    public function setMiddlewareCode(String $middlewareCode): Resource {
+        $this->middlewareCode = $middlewareCode;
+        return $this;
+    }
+
+    public function getMiddlewareCode(): ?String {
+        return $this->middlewareCode;
     }
 
     public function setUri(String $uri): Resource {
@@ -60,15 +69,6 @@ class Resource {
 
     public function getType(): String {
         return $this->type;
-    }
-
-    public function setInputHeader(String $type, String $element, Array $rules): Resource {
-        $this->inputHeader = [$type, $element, $rules];
-        return $this;
-    }
-
-    public function getInputHeader(): ?Array {
-        return $this->inputHeader;
     }
 
     public function setInputUri(String $type, String $element, Array $rules): Resource {

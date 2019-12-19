@@ -128,6 +128,43 @@ abstract class Http {
 
             $output = null;
 
+            $responseMiddleware = null;
+
+            if ($dispatch->getMiddlewareCode()) {
+
+                $middlewareCodeParts = explode(':', $resource->getMiddlewareCode());
+
+                if (count($middlewareCodeParts) > 1) {
+                    list($middlewareCode, $parametersMiddlewareValues) = $middlewareCodeParts;
+                } else {
+                    list($middlewareCode) = $middlewareCodeParts;
+                    $parametersMiddlewareValues = '';
+                }
+                
+
+                $parametersMiddlewareValues = explode(',', $parametersMiddlewareValues);
+
+                $middlewareIntercept = Request::getMiddlewareInterceptFactory($middlewareCode);
+
+                $middlewareSchema = Request::getMiddlewareSchema($middlewareCode);
+                
+                if (($middlewareSchema) and ($middlewareIntercept)) {
+
+                    $middlewareParameters = new \StdClass;
+
+                    foreach($middlewareSchema->getParameters() as $key => $parameter) {
+
+                        $middlewareParameters->{$parameter} = array_key_exists($key, $parametersMiddlewareValues) ? $parametersMiddlewareValues[$key] : null;
+
+                    }
+
+                    list($typeMiddleware, $elementMiddleware, $rulesMiddleware) = $middlewareSchema->getInputHeader();
+
+                    $responseMiddleware = $middlewareIntercept->intercept((new \PHPBook\Http\Query(new $typeMiddleware($elementMiddleware, 'Input Header'), $rulesMiddleware))->intercept($header), $middlewareParameters);
+                }
+                
+            };
+
             if ($dispatch->getInputUri()) {
                 
 				list($type, $element, $rules) = $dispatch->getInputUri();
@@ -152,14 +189,6 @@ abstract class Http {
                 
             };
 
-            if ($dispatch->getInputHeader()) {
-                
-                list($type, $element, $rules) = $dispatch->getInputHeader();
-
-				$inputs->header = (new \PHPBook\Http\Query(new $type($element, 'Input Header'), $rules))->intercept($header);
-                
-            };
-
             if ($dispatch->getOutput()) {
 
 				list($type, $element, $rules) = $dispatch->getOutput();
@@ -170,7 +199,7 @@ abstract class Http {
             
             unset($type, $element, $rules);
             
-            $response = $controller->{$controllerMethod}($inputs, $output);
+            $response = $controller->{$controllerMethod}($inputs, $output, $responseMiddleware);
 
             if ($dispatch->getCacheHours()) {
                 Dispatch::cache($dispatch->getCacheHours());

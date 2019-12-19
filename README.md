@@ -5,6 +5,7 @@
 	* [Declare Configurations](#declare-configurations)
 	* [Declare Application Elements](#declare-application-elements)
 	* [Declare Application Controllers](#declare-application-controllers)
+	* [Declare Application Middleware](#declare-application-iddleware)
 	* [Generate Request Proxies](#generate-request-proxies)
 	* [Start Request Proxies](#start-request-proxies)
 	* [Start Application Http](#start-application-http)
@@ -175,6 +176,51 @@ class EncapsulationBeanElement extends \PHPBook\Http\Element {
 	}
 
 }
+
+?>
+```
+
+##### Declare Application Middleware
+
+```php
+<?php 
+
+/*********************************************
+* 
+*  Declare Application Middleware
+* 
+* *******************************************/
+
+/**
+ * @PHPBookHttpMiddleware{
+ *      "setCode": "'authenticationMiddleware'"
+ *      "setName": "'Authentication Middleware'"
+ * 		"setInputHeader": "'\PHPBook\Http\Parameter\One', 'AuthenticationElement', []"
+ *		"setParameters": "['requireRole']"
+ * }
+ */
+class AuthenticationMiddleware {
+
+
+	public function intercept($header, $parameter) {
+
+		//get header value;
+		$header->{'My-Key'};
+
+		//get parameter value
+		$parameter->requireRole;
+
+		//throw exception when something is wrong
+		throw new Exception("authentication denied");
+
+		//return whatever you want
+		return $authentication;
+
+	}
+
+
+}
+
 
 ?>
 ```
@@ -369,18 +415,19 @@ class CustomerController {
 	 *      "setCategoryCode": "'customerCategory'"
 	 *      "setUri": "'customer/delete/:id'"
 	 * 		"setNotes": "'Any important note'"
+	 *		"setMiddlewareCode": "'authenticationMiddleware:roleDeleteCustomer'"
 	 * 		"setType": "'delete'"
-	 * 		"setInputHeader": "'\PHPBook\Http\Parameter\One', 'AuthenticationElement', []"
 	 * 		"setInputUri": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']]"
 	 * }
 	 */
-	public function delete($inputs, $output) {
+	public function delete($inputs, $output, \Authentication\User $user) {
+
+		//variable $user in the third parameter contains the return of the middleware method intercept
 
 		//inside the $inputs primitive values, the whitespace are stripped from the beginning and end
 		//values non defined by user, will be defined null
 		//extra values defined by user, will be ignored
 		
-		//get $inputs->header->{'My-Key'} to authentication;
 		//get by $inputs->uri->id to delete;
 		
 		return Null;
