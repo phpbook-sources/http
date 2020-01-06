@@ -73,6 +73,20 @@
             </div>
         <?php endif; ?>
 
+        <?php if ($resource->getInputQuery()): ?>
+            <div class="fieldset">
+                <div class="name">
+                    Query Input
+                </div>
+                <div class="data">
+                    <xmp><?php
+                        list($type, $element, $rules) = $resource->getInputQuery();
+                        $inputQuery = new \PHPBook\Http\Query(new $type($element, 'InputQuery'), $rules);
+                        echo \PHPBook\Http\Dispatch::schema($inputQuery->schema());?></xmp>
+                </div>                          
+            </div>
+        <?php endif; ?>
+
         <?php if ($resource->getInputBody()): ?>
             <div class="fieldset">
                 <div class="name">
