@@ -1,8 +1,19 @@
 <?php namespace PHPBook\Http;
 
 abstract class Element {
-    
+
+    private $description = 'No description';
+
     private $parameters = [];
+
+    public function setDescription(String $description): Element {
+        $this->description = $description;
+        return $this;
+    }
+
+    public function getDescription(): String {
+        return $this->description;
+    }
     
     public function setParameter(String $name, Parameter $parameter): Element {
         $this->parameters[$name] = $parameter;

@@ -34,6 +34,56 @@
             </div>							
         </div>
 
+        <?php $relationUsage = []; ?>
+
+        <?php
+        if ($resource->getMiddlewareCode()) {
+            $middlewareCodeParts = explode(':', $resource->getMiddlewareCode());
+            if (count($middlewareCodeParts) > 1) {
+                list($middlewareCode, $middlewareParameters) = explode(':', $resource->getMiddlewareCode());
+            } else {
+                list($middlewareCode) = explode(':', $resource->getMiddlewareCode());
+                $middlewareParameters = null;
+            };
+            $middleware = \PHPBook\Http\Request::getMiddlewareSchema($middlewareCode);
+        } else {
+            $middleware = null;
+        }
+        ?>
+        <?php if ($middleware): ?>
+            <?php if ($middleware->getRelation()): ?>
+                <?php foreach($middleware->getRelation() as $relation): ?>
+                    <?php $relationUsage[] = $relation ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        <?php endif; ?>
+
+        <?php if ($resource->getRelation()): ?>
+            <?php foreach($resource->getRelation() as $relation): ?>
+                <?php $relationUsage[] = $relation ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
+        <?php if (count($relationUsage) > 0): ?>
+            <div class="fieldset">
+                <div class="name">
+                    Usage Relations
+                </div>
+                <div class="data">
+                    <?php foreach($relationUsage as $relationUsageRaw): ?>
+                        <?php list($relationType, $relationUri) = $relationUsageRaw ?>
+                        <?php foreach (\PHPBook\Http\Request::getResources() as $resourceUsage): ?>
+                            <?php if (($resourceUsage->getUri() == $relationUri) and ($resourceUsage->getType() == $relationType)): ?>
+                                <strong><?php echo $relationType; ?></strong>
+                                <?php echo $relationUri; ?> - <?php echo $resourceUsage->getNotes() ?> <br />
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
          <?php if ($resource->getMiddlewareCode()): ?>
             <div class="fieldset">
                 <div class="name">
@@ -119,7 +169,7 @@
             </div>
 
         <?php endif; ?>
-        
+
         <div class="fieldset">
             <div class="name">
                 Output Exception

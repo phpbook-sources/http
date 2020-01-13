@@ -11,6 +11,8 @@ class Resource {
     private $notes;
 
     private $type;
+
+    private $relation;
     
     private $inputUri;
 
@@ -69,6 +71,16 @@ class Resource {
 
     public function getType(): String {
         return $this->type;
+    }
+
+
+    public function setRelation(?array $relation): Resource {
+        $this->relation = $relation;
+        return $this;
+    }
+
+    public function getRelation(): ?array {
+        return $this->relation;
     }
 
     public function setInputUri(String $type, String $element, Array $rules): Resource {

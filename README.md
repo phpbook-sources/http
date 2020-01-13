@@ -107,6 +107,8 @@
 class AuthenticationElement extends \PHPBook\Http\Element {
 
 	public function __construct() {
+        
+        $this->setDescription('Authentication');
 
 		$this->setParameter('My-Key', new \PHPBook\Http\Parameter\Value('header key auth'));
 		$this->setParameter('User-Agent', new \PHPBook\Http\Parameter\Value('header key auth'));
@@ -119,6 +121,8 @@ class AuthenticationElement extends \PHPBook\Http\Element {
 class CustomerQueryElement extends \PHPBook\Http\Element {
 
 	public function __construct() {
+        
+        $this->setDescription('Query Filter');
 
 		$this->setParameter('ageStarts', new \PHPBook\Http\Parameter\Value('age starts with'));
 
@@ -129,6 +133,8 @@ class CustomerQueryElement extends \PHPBook\Http\Element {
 class FoodElement extends \PHPBook\Http\Element {
 
 	public function __construct() {
+            
+        $this->setDescription('Food');
 
 		$this->setParameter('id', new \PHPBook\Http\Parameter\Value('food id description'));
 		$this->setParameter('name', new \PHPBook\Http\Parameter\Value('food name description'));
@@ -140,6 +146,8 @@ class FoodElement extends \PHPBook\Http\Element {
 class FriendElement extends \PHPBook\Http\Element {
 
 	public function __construct() {
+        
+        $this->setDescription('Friend');
 
 		$this->setParameter('id', new \PHPBook\Http\Parameter\Value('friend id description'));
 		$this->setParameter('name', new \PHPBook\Http\Parameter\Value('friend name description'));
@@ -152,6 +160,8 @@ class FriendElement extends \PHPBook\Http\Element {
 class CustomerElement extends \PHPBook\Http\Element {
 
 	public function __construct() {
+        
+        $this->setDescription('Customer');
 
 		$this->setParameter('id', new \PHPBook\Http\Parameter\Value('customer id description'));
 		$this->setParameter('name', new \PHPBook\Http\Parameter\Value('customer name description'));
@@ -166,6 +176,8 @@ class CustomerElement extends \PHPBook\Http\Element {
 class EncapsulationBeanElement extends \PHPBook\Http\Element {
 
 	public function __construct() {
+        
+        $this->setDescription('Bean');
 
 		$this->setParameter('id', new \PHPBook\Http\Parameter\Value('customer id description', 'getId'));
 		$this->setParameter('name', new \PHPBook\Http\Parameter\Value('customer name description', 'getName'));
@@ -197,6 +209,7 @@ class EncapsulationBeanElement extends \PHPBook\Http\Element {
  *      "setName": "'Authentication Middleware'"
  * 		"setInputHeader": "'\PHPBook\Http\Parameter\One', 'AuthenticationElement', []"
  *		"setParameters": "['requireRole']"
+ *      "setRelation": "[['get', 'user/permissions']]"
  * }
  */
 class AuthenticationMiddleware {
@@ -252,12 +265,13 @@ class CustomerController {
 	 *      "setUri": "'customer/post'"
 	 * 		"setNotes": "'Any important note'"
 	 * 		"setType": "'post'"
+     *      "setRelation": "[['get', 'customer/email/exists'], ['get', 'customer/name/exists']]"
 	 * 		"setInputBody": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['except' => ['id']]"
 	 * 		"setOutput": "'\PHPBook\Http\Parameter\One', 'CustomerElement', []"
 	 * }
 	 */
 	public function post($inputs, $output) {
-
+        
 		//inside the $inputs primitive values, the whitespace are stripped from the beginning and end
 		//values non defined by user, will be defined null
 		//extra values defined by user, will be ignored

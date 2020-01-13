@@ -33,7 +33,7 @@ class One extends \PHPBook\Http\Parameter {
                 } else {
                     $parser = null;
                 };
-                if ($parser) {
+                if ($parser !== null) {
                     $item->{$name} = $parameter->standard($this->nestRules($rules, $name), $parser);
                 } else {
                     $item->{$name} = $parser;
@@ -54,7 +54,7 @@ class One extends \PHPBook\Http\Parameter {
 			if ($this->hasInRule($rules, $name)) {
 				$parser = ((is_object($value)) and (property_exists($value, $name))) ? $value->{$name} : 
                     (((is_array($value)) and (array_key_exists($name, $value))) ? $value[$name] : Null);
-				if ($parser) {
+				if ($parser !== Null) {
 					$item->{$name} = $parameter->intercept($this->nestRules($rules, $name), $parser);
 				} else {
 					$item->{$name} = $parameter->empty();
@@ -65,12 +65,13 @@ class One extends \PHPBook\Http\Parameter {
     }
 	
 	public function schema(Array $rules) {
+        $elementClass = $this->getElementClass();
+        $elementItem = new $elementClass;
 		$schema = new \StdClass;
-		$schema->description = $this->getDescription();
+		$schema->description = $elementItem->getDescription();
 		$schema->type = '@OneOf';
 		$schema->schema = new \StdClass;
-		$elementClass = $this->getElementClass();
-        foreach((new $elementClass)->getParameters() as $name => $parameter) {	
+        foreach($elementItem->getParameters() as $name => $parameter) {
 			if ($this->hasInRule($rules, $name)) {
 				$schema->schema->{$name} = $parameter->schema($this->nestRules($rules, $name));
 			};

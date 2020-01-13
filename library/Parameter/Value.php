@@ -12,11 +12,11 @@ class Value extends \PHPBook\Http\Parameter {
     }
 
     public function intercept(Array $rules, $value) {
-        return trim($value);
+        return is_string($value) ? trim($value) : $value;
     }
 
     public function standard(Array $rules, $value) {
-        return trim($value);
+        return is_string($value) ? trim($value) : $value;
     }
 
 	public function schema(Array $rules) {

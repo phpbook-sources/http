@@ -12,6 +12,8 @@ class Middleware {
 
     private $middleware;
 
+    private $relation;
+
     public function setCode(String $code): Middleware {
         $this->code = $code;
         return $this;
@@ -56,5 +58,15 @@ class Middleware {
     public function getMiddleware(): ?String {
         return $this->middleware;
     }
+
+    public function setRelation(?array $relation): Middleware {
+        $this->relation = $relation;
+        return $this;
+    }
+
+    public function getRelation(): ?array {
+        return $this->relation;
+    }
+
 
 }

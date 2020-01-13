@@ -42,12 +42,13 @@ class Many extends \PHPBook\Http\Parameter {
     }
 
 	public function schema(Array $rules) {
+        $elementClass = $this->getElementClass();
+        $elementItem = new $elementClass;
 		$schema = new \StdClass;
-		$schema->description = $this->getDescription();
+		$schema->description = $elementItem->getDescription();
 		$schema->type = '@ManyOf';
 		$schema->schema = new \StdClass;
-		$elementClass = $this->getElementClass();
-        foreach((new $elementClass)->getParameters() as $name => $parameter) {	
+        foreach($elementItem->getParameters() as $name => $parameter) {
 			if ($this->hasInRule($rules, $name)) {
 				$schema->schema->{$name} = $parameter->schema($this->nestRules($rules, $name));
 			};
