@@ -156,6 +156,13 @@
         margin-top: 10px;
         margin-bottom: 10px;
     }
+    .side-content .content .container .smalltitle {
+        font-size: 18px;
+        font-weight: 400;
+        color: #3c9e95;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
     .side-content .content .container .text {
         font-size: 16px;
         font-weight: 400;

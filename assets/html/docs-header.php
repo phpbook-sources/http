@@ -12,6 +12,65 @@
 	
 	<body>
 
+        <?php
+
+        function getCategoryMenuRecursive($categoryNest = null, $key = null) {
+
+            if ($categoryNest) {
+
+                $menuItem = [
+                    'name' => $categoryNest->getName(),
+                    'key' => $key,
+                    'sub' => []
+                ];
+
+                if (count(\PHPBook\Http\Request::getCategories()) > 0) {
+                    foreach (\PHPBook\Http\Request::getCategories() as $keyChild => $categoryChild) {
+                        if ($categoryChild->getMainResourceCategoryCode() == $categoryNest->getCode()) {
+                            $menuItem['sub'][] = getCategoryMenuRecursive($categoryChild, $keyChild);
+                        }
+                    }
+                }
+
+                return $menuItem;
+
+            } else {
+
+                $menus = [];
+
+                if (count(\PHPBook\Http\Request::getCategories()) > 0) {
+                    foreach (\PHPBook\Http\Request::getCategories() as $key => $category) {
+                        if (!$category->getMainResourceCategoryCode()) {
+                            $menus[] = getCategoryMenuRecursive($category, $key);
+                        }
+                    }
+                }
+
+                return $menus;
+
+            }
+
+        }
+
+        function renderCategoryMenuRecursive($path, $categoriesNode, $nestLevel = 0){
+
+            $html = '';
+
+            foreach($categoriesNode as $category) {
+
+                $subitems = renderCategoryMenuRecursive($path, $category['sub'], $nestLevel + 1);
+
+                $html .= '<div class="link" style="margin-left: '.($nestLevel * 10).'px; display: block"><a href="' . $path . \PHPBook\Http\Configuration\Directory::getDocs() .'/resources/' . $category['key'].'" title="'.$category['name'].'">'.$category['name'].'</a>'.$subitems.'</div>';
+
+            }
+
+            return $html;
+        }
+
+        $categoryMenuRecursive = getCategoryMenuRecursive();
+
+        ?>
+
 		<div class="page">
 
 			<div class="side-menu">
@@ -46,15 +105,12 @@
 
 						<div class="menu">
 
-							<?php if (count(\PHPBook\Http\Request::getCategories()) > 0): ?>
+							<?php if (count($categoryMenuRecursive) > 0): ?>
 
-								<?php foreach (\PHPBook\Http\Request::getCategories() as $key => $category): ?>
-									<div class="link">
-										<a href="<?php echo $path; ?><?php echo \PHPBook\Http\Configuration\Directory::getDocs(); ?>/resources/<?php echo $key; ?>" title="<?php echo $category->getName(); ?>"><?php echo $category->getName(); ?></a>
-									</div>
-								<?php endforeach; ?>
+                                <?php echo renderCategoryMenuRecursive($path, $categoryMenuRecursive); ?>
 
-							<?php else: ?>
+
+                            <?php else: ?>
 
 								<strong>There is no Resources!</strong>
 

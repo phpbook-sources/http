@@ -1,7 +1,29 @@
 
+    <?php
+
+    function getCategoryNamePathRecursive($categoryNest = null, $menu = []) {
+
+        if (count(\PHPBook\Http\Request::getCategories()) > 0) {
+            foreach (\PHPBook\Http\Request::getCategories() as $keyChild => $categoryChild) {
+                if ($categoryChild->getCode() == $categoryNest->getMainResourceCategoryCode()) {
+                    array_unshift($menu, $categoryChild->getName());
+                    $menu = getCategoryNamePathRecursive($categoryChild, $menu);
+                }
+            }
+        }
+
+        return $menu;
+    }
+
+    ?>
+
     <?php if (array_key_exists($value, \PHPBook\Http\Request::getCategories())): ?>
 
         <?php $category = \PHPBook\Http\Request::getCategories()[$value]; ?>
+
+        <div class="smalltitle">
+            <?php echo implode(' | ', getCategoryNamePathRecursive($category)); ?>
+        </div>
 
         <div class="title">
             <?php echo $category->getName(); ?>

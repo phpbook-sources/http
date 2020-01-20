@@ -6,6 +6,8 @@ class Category {
 
     private $name;
 
+    private $mainResourceCategoryCode;
+
     public function setCode(String $code): Category {
         $this->code = $code;
         return $this;
@@ -23,5 +25,15 @@ class Category {
     public function getName(): ?String {
         return $this->name;
     }
-	
+
+    public function setMainResourceCategoryCode(String $mainResourceCategoryCode): Category {
+        $this->mainResourceCategoryCode = $mainResourceCategoryCode;
+        return $this;
+    }
+
+    public function getMainResourceCategoryCode(): ?String {
+        return $this->mainResourceCategoryCode;
+    }
+
+
 }

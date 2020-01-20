@@ -255,6 +255,7 @@ PHPBook Http uses docs notations to declare request resources.
  * @PHPBookHttpRequestCategory{
  *      "setCode": "'customerCategory'"
  *      "setName": "'Customer Category'"
+ *      "setMainResourceCategoryCode": "'optionalExampleModulesRequestCategoryCode'"
  * }
  */
 class CustomerController {
