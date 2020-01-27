@@ -108,7 +108,15 @@ abstract class Http {
 
             $header = getallheaders();
 
-            parse_str(file_get_contents("php://input"), $body);
+            if (count($_POST) == 0) {
+
+                parse_str(file_get_contents("php://input"), $body);
+
+            } else {
+
+                $body = $_POST;
+
+            }
 
             $query = $_GET;
 
