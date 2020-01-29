@@ -4,6 +4,17 @@ abstract class Http {
     
     public static function start() {
 
+        header("Access-Control-Allow-Origin:*");
+        header("Access-Control-Allow-Methods:GET,POST,HEAD,PUT,DELETE,OPTIONS");
+        header("Access-Control-Allow-Headers:*");
+
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+
+            header('Access-Control-Max-Age: 3600');
+            exit(0);
+
+        }
+
         try {
 
             $requestAddress = explode('?', $_SERVER['REQUEST_URI']);
