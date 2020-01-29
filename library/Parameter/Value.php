@@ -16,11 +16,17 @@ class Value extends \PHPBook\Http\Parameter {
     }
 
     public function standard(Array $rules, $value) {
-        return is_string($value) ? trim($value) : $value;
+        if (is_string($value)) {
+            return trim($value);
+        }
+        if ($value instanceof \DateTime) {
+            return $value->format('Y-m-d H:i:s');
+        }
+        return $value;
     }
 
-	public function schema(Array $rules) {
-		return $this->getDescription();
-	}
-	
+    public function schema(Array $rules) {
+        return $this->getDescription();
+    }
+    
 }
