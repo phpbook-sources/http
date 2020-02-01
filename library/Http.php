@@ -23,7 +23,11 @@ abstract class Http {
 
             $directory = explode('/', pathinfo($_SERVER['PHP_SELF'])['dirname']);
 
-            $parameters = array_values(array_diff($requestUri, $directory));
+            $parameters = $requestUri;
+
+        foreach($directory as $key => $itemDirectory) {
+        array_shift($parameters);
+        }
 
             if (count($parameters)) {
 
@@ -186,17 +190,17 @@ abstract class Http {
 
             if ($dispatch->getInputUri()) {
                 
-				list($type, $element, $rules) = $dispatch->getInputUri();
+                list($type, $element, $rules) = $dispatch->getInputUri();
 
-				$inputs->uri = (new \PHPBook\Http\Query(new $type($element, 'Input URI'), $rules))->intercept($uri);
+                $inputs->uri = (new \PHPBook\Http\Query(new $type($element, 'Input URI'), $rules))->intercept($uri);
                 
             };
 
             if ($dispatch->getInputQuery()) {
                 
-				list($type, $element, $rules) = $dispatch->getInputQuery();
+                list($type, $element, $rules) = $dispatch->getInputQuery();
 
-				$inputs->query = (new \PHPBook\Http\Query(new $type($element, 'Input Query'), $rules))->intercept($query);
+                $inputs->query = (new \PHPBook\Http\Query(new $type($element, 'Input Query'), $rules))->intercept($query);
                 
             };
 
@@ -204,14 +208,14 @@ abstract class Http {
 
                 list($type, $element, $rules) = $dispatch->getInputBody();
 
-				$inputs->body = (new \PHPBook\Http\Query(new $type($element, 'Input Body'), $rules))->intercept($body);
+                $inputs->body = (new \PHPBook\Http\Query(new $type($element, 'Input Body'), $rules))->intercept($body);
                 
             };
 
             if ($dispatch->getOutput()) {
 
-				list($type, $element, $rules) = $dispatch->getOutput();
-				
+                list($type, $element, $rules) = $dispatch->getOutput();
+                
                 $output = new \PHPBook\Http\Query(new $type($element, 'Output'), $rules);
                 
             };        
@@ -273,7 +277,7 @@ abstract class Http {
         };        
 
         include __DIR__ . '/../assets/html/docs-footer.php';
-		
-	}
+        
+    }
 
 }
