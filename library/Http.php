@@ -25,9 +25,9 @@ abstract class Http {
 
             $parameters = $requestUri;
 
-        foreach($directory as $key => $itemDirectory) {
-        array_shift($parameters);
-        }
+            foreach($directory as $key => $itemDirectory) {
+                array_shift($parameters);
+            }
 
             if (count($parameters)) {
 
@@ -125,7 +125,11 @@ abstract class Http {
 
             if (count($_POST) == 0) {
 
-                parse_str(file_get_contents("php://input"), $body);
+                $body = json_decode(file_get_contents("php://input"));
+
+                if (!$body) {
+                    $body = new \stdClass();
+                }
 
             } else {
 
