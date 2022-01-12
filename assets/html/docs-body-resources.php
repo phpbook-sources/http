@@ -121,7 +121,7 @@
                                     $middleware = \PHPBook\Http\Request::getMiddlewareSchema($middlewareCode);
                                     if ($middleware) {
                                     echo $middleware->getName() . '<br />';
-                                    echo (count($middlewareParameters) > 0) ? '<strong>internal middleware parameters</strong> [' . $middlewareParameters . ']': '';
+                                    echo $middlewareParameters ? '<strong>internal middleware parameters</strong> [' . $middlewareParameters . ']': '';
                                     list($type, $element, $rules) = $middleware->getInputHeader();
                                     $inputHeader = new \PHPBook\Http\Query(new $type($element, 'InputHeader'), $rules);
                                     echo '<xmp>' . \PHPBook\Http\Dispatch::schema($inputHeader->schema()) . '</xmp>';}?>
