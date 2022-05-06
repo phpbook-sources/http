@@ -7,7 +7,7 @@
     var searchResources = function(e) {
         var searcher = document.getElementById("searcher");
         if (searcher.value.length) {
-            window.location.href = "<?php echo $path; ?><?php echo \PHPBook\Http\Configuration\Directory::getDocs(); ?>/search" + '/' + searcher.value;
+            window.location.href = "<?php echo $path; ?><?php echo \PHPBook\Http\Configuration\Directory::getDocs(); ?>/search" + '?search=' + searcher.value;
         };
         return false;
     };

@@ -95,7 +95,7 @@
                                     <?php foreach (\PHPBook\Http\Request::getResources() as $resourceUsage): ?>
                                         <?php if (($resourceUsage->getUri() == $relationUri) and ($resourceUsage->getType() == $relationType)): ?>
                                             <strong><?php echo $relationType; ?></strong>
-                                            <?php echo $relationUri; ?> - <?php echo $resourceUsage->getNotes() ?> <br />
+                                            <a href="<?php echo $path; ?><?php echo \PHPBook\Http\Configuration\Directory::getDocs(); ?>/search?search=<?php echo $relationUri; ?>"><?php echo $relationUri; ?> - <?php echo $resourceUsage->getNotes() ?></a> <br />
                                         <?php endif; ?>
                                     <?php endforeach; ?>
 

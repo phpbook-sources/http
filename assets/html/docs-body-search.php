@@ -1,5 +1,4 @@
-
-<?php $expression = urldecode($value); ?>
+<?php $expression = urldecode($searchString); ?>
 
 <div class="title">
     Search "<?php echo $expression ?>"
@@ -10,6 +9,7 @@
     <?php foreach (\PHPBook\Http\Request::getResources() as $key => $resource): ?>
 
         <?php if (
+            ($expression) and
             (strpos(strtolower($resource->getUri()), strtolower($expression)) === false) and
             (strpos(strtolower($resource->getNotes()), strtolower($expression)) === false) and
             (strpos(strtolower($resource->getType()), strtolower($expression)) === false)
@@ -24,14 +24,14 @@
         <p>
             <strong><?php echo $resource->getNotes(); ?></strong>
         </p>
-        
+
         <div class="fieldset">
             <div class="name">
                 <?php echo strtoupper($resource->getType()); ?>
             </div>
             <div class="data">
                 <span class="label-info"><?php echo $path . \PHPBook\Http\Configuration\Directory::getApp() . '/'; ?></span><span class="label-important"><?php echo $resource->getUri(); ?></span>
-            </div>							
+            </div>
         </div>
 
         <?php $relationUsage = []; ?>
@@ -75,7 +75,7 @@
                         <?php foreach (\PHPBook\Http\Request::getResources() as $resourceUsage): ?>
                             <?php if (($resourceUsage->getUri() == $relationUri) and ($resourceUsage->getType() == $relationType)): ?>
                                 <strong><?php echo $relationType; ?></strong>
-                                <?php echo $relationUri; ?> - <?php echo $resourceUsage->getNotes() ?> <br />
+                                <a href="<?php echo $path; ?><?php echo \PHPBook\Http\Configuration\Directory::getDocs(); ?>/search?search=<?php echo $relationUri; ?>"><?php echo $relationUri; ?> - <?php echo $resourceUsage->getNotes() ?></a> <br />
                             <?php endif; ?>
                         <?php endforeach; ?>
 
@@ -84,24 +84,24 @@
             </div>
         <?php endif; ?>
 
-         <?php if ($resource->getMiddlewareCode()): ?>
+        <?php if ($resource->getMiddlewareCode()): ?>
             <div class="fieldset">
                 <div class="name">
                     Header Input
                 </div>
                 <div class="data">
                     <?php
-                        $middlewareCodeParts = explode(':', $resource->getMiddlewareCode());
-                        if (count($middlewareCodeParts) > 1) {
-                            list($middlewareCode, $middlewareParameters) = explode(':', $resource->getMiddlewareCode());
-                        } else {
-                            list($middlewareCode) = explode(':', $resource->getMiddlewareCode());
-                            $middlewareParameters = null;
-                        };
-                        $middleware = \PHPBook\Http\Request::getMiddlewareSchema($middlewareCode);
-                        if ($middleware) {
+                    $middlewareCodeParts = explode(':', $resource->getMiddlewareCode());
+                    if (count($middlewareCodeParts) > 1) {
+                        list($middlewareCode, $middlewareParameters) = explode(':', $resource->getMiddlewareCode());
+                    } else {
+                        list($middlewareCode) = explode(':', $resource->getMiddlewareCode());
+                        $middlewareParameters = null;
+                    };
+                    $middleware = \PHPBook\Http\Request::getMiddlewareSchema($middlewareCode);
+                    if ($middleware) {
                         echo $middleware->getName() . '<br />';
-                        echo (count($middlewareParameters) > 0) ? '<strong>internal middleware parameters</strong> [' . $middlewareParameters . ']': '';
+                        echo $middlewareParameters ? '<strong>internal middleware parameters</strong> [' . $middlewareParameters . ']': '';
                         list($type, $element, $rules) = $middleware->getInputHeader();
                         $inputHeader = new \PHPBook\Http\Query(new $type($element, 'InputHeader'), $rules);
                         echo '<xmp>' . \PHPBook\Http\Dispatch::schema($inputHeader->schema()) . '</xmp>';}?>
@@ -119,7 +119,7 @@
                         list($type, $element, $rules) = $resource->getInputUri();
                         $inputUri = new \PHPBook\Http\Query(new $type($element, 'InputURI'), $rules);
                         echo \PHPBook\Http\Dispatch::schema($inputUri->schema());?></xmp>
-                </div>                          
+                </div>
             </div>
         <?php endif; ?>
 
@@ -133,7 +133,7 @@
                         list($type, $element, $rules) = $resource->getInputQuery();
                         $inputQuery = new \PHPBook\Http\Query(new $type($element, 'InputQuery'), $rules);
                         echo \PHPBook\Http\Dispatch::schema($inputQuery->schema());?></xmp>
-                </div>                          
+                </div>
             </div>
         <?php endif; ?>
 
@@ -147,13 +147,13 @@
                         list($type, $element, $rules) = $resource->getInputBody();
                         $inputBody = new \PHPBook\Http\Query(new $type($element, 'InputBody'), $rules);
                         echo \PHPBook\Http\Dispatch::schema($inputBody->schema());?></xmp>
-                </div>                          
+                </div>
             </div>
         <?php endif; ?>
 
         <?php if ($resource->getOutput()): ?>
 
-             <div class="fieldset">
+            <div class="fieldset">
                 <div class="name">
                     Output
                 </div>
@@ -164,22 +164,22 @@
                     <xmp><?php
                         list($type, $element, $rules) = $resource->getOutput();
                         $output = new \PHPBook\Http\Query(new $type($element, 'Output'), $rules);
-                        echo \PHPBook\Http\Dispatch::schema($output->schema());?></xmp>                            
-                </div>						
+                        echo \PHPBook\Http\Dispatch::schema($output->schema());?></xmp>
+                </div>
             </div>
 
         <?php endif; ?>
 
-        <div class="fieldset">
-            <div class="name">
-                Output Exception
+            <div class="fieldset">
+                <div class="name">
+                    Output Exception
+                </div>
+                <div class="data">
+                    <xmp><?php echo \PHPBook\Http\Dispatch::schema(\PHPBook\Http\Configuration\Output::getException()); ?></xmp>
+                    <strong>where ouput exception @ is equal the string message</strong>
+                </div>
             </div>
-            <div class="data">
-                <xmp><?php echo \PHPBook\Http\Dispatch::schema(\PHPBook\Http\Configuration\Output::getException()); ?></xmp>
-                <strong>where ouput exception @ is equal the string message</strong>
-            </div>	
-        </div>
-                
+
         <hr />
 
     <?php endforeach; ?>
