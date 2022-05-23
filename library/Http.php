@@ -1,7 +1,7 @@
 <?php namespace PHPBook\Http;
 
 abstract class Http {
-    
+
     public static function start() {
 
         header("Access-Control-Allow-Origin:*");
@@ -24,7 +24,7 @@ abstract class Http {
             });
 
             $directory = array_filter(explode('/', pathinfo($_SERVER['PHP_SELF'])['dirname']), function($item) {
-                 return strlen($item) > 0;
+                return strlen($item) > 0;
             });;
 
             $parameters = $requestUri;
@@ -52,17 +52,17 @@ abstract class Http {
                 };
 
             } else {
-                
+
                 header('location:' . Configuration\Directory::getDefault());
 
             };
 
         } catch(\Exception $exception) {
-            
+
             Dispatch::exception($exception->getMessage());
 
         };
-        
+
     }
 
     private static function startApp(Array $parameters) {
@@ -70,9 +70,9 @@ abstract class Http {
         $dispatch = null;
 
         $uri = null;
-        
+
         foreach(Request::getResources() as $resource) {
-            
+
             $fragments = explode('/', $resource->getUri());
 
             if ((count($fragments) <> count($parameters)) or (strtolower($resource->getType()) != strtolower($_SERVER['REQUEST_METHOD']))) {
@@ -86,7 +86,7 @@ abstract class Http {
                 $uri = [];
 
                 foreach($fragments as $position => $fragment) {
-    
+
                     if (mb_substr($fragment, 0, 1) == ':') {
 
                         if (!array_key_exists($position, $parameters)) {
@@ -101,14 +101,14 @@ abstract class Http {
                     } else {
 
                         if ((!array_key_exists($position, $parameters)) or ($fragment != $parameters[$position])) {
-                           
+
                             $match = false;
 
                             break;
 
                         };
                     };
-    
+
                 };
 
                 if ($match) {
@@ -118,7 +118,7 @@ abstract class Http {
                     break;
 
                 };
-                
+
             };
 
         };
@@ -144,7 +144,7 @@ abstract class Http {
             $query = $_GET;
 
             list($classController, $controllerMethod) = $dispatch->getController();
-            
+
             $controller = new $classController;
 
             $inputs = new \StdClass;
@@ -171,14 +171,14 @@ abstract class Http {
                     list($middlewareCode) = $middlewareCodeParts;
                     $parametersMiddlewareValues = '';
                 }
-                
+
 
                 $parametersMiddlewareValues = explode(',', $parametersMiddlewareValues);
 
                 $middlewareIntercept = Request::getMiddlewareInterceptFactory($middlewareCode);
 
                 $middlewareSchema = Request::getMiddlewareSchema($middlewareCode);
-                
+
                 if (($middlewareSchema) and ($middlewareIntercept)) {
 
                     $middlewareParameters = new \StdClass;
@@ -193,23 +193,23 @@ abstract class Http {
 
                     $responseMiddleware = $middlewareIntercept->intercept((new \PHPBook\Http\Query(new $typeMiddleware($elementMiddleware, 'Input Header'), $rulesMiddleware))->intercept($header), $middlewareParameters);
                 }
-                
+
             };
 
             if ($dispatch->getInputUri()) {
-                
+
                 list($type, $element, $rules) = $dispatch->getInputUri();
 
                 $inputs->uri = (new \PHPBook\Http\Query(new $type($element, 'Input URI'), $rules))->intercept($uri);
-                
+
             };
 
             if ($dispatch->getInputQuery()) {
-                
+
                 list($type, $element, $rules) = $dispatch->getInputQuery();
 
                 $inputs->query = (new \PHPBook\Http\Query(new $type($element, 'Input Query'), $rules))->intercept($query);
-                
+
             };
 
             if ($dispatch->getInputBody()) {
@@ -217,19 +217,19 @@ abstract class Http {
                 list($type, $element, $rules) = $dispatch->getInputBody();
 
                 $inputs->body = (new \PHPBook\Http\Query(new $type($element, 'Input Body'), $rules))->intercept($body);
-                
+
             };
 
             if ($dispatch->getOutput()) {
 
                 list($type, $element, $rules) = $dispatch->getOutput();
-                
+
                 $output = new \PHPBook\Http\Query(new $type($element, 'Output'), $rules);
-                
-            };        
-            
+
+            };
+
             unset($type, $element, $rules);
-            
+
             $response = $controller->{$controllerMethod}($inputs, $output, $responseMiddleware);
 
             if ($dispatch->getCacheHours()) {
@@ -237,15 +237,15 @@ abstract class Http {
             };
 
             if ($dispatch->getIsBufferOutput()) {
-                
+
                 Dispatch::buffer($response);
-                
+
             } else {
-                
+
                 Dispatch::content($response);
-                
+
             };
-            
+
         } else {
 
             Dispatch::exception('not found', 404);
@@ -255,7 +255,7 @@ abstract class Http {
     }
 
     private static function startDocs(Array $parameters) {
-        
+
         list($type, $value) = count($parameters) == 2 ?  : ['none', 'none'];
 
         include __DIR__ . '/../assets/html/docs-header.php';
@@ -263,16 +263,21 @@ abstract class Http {
         if (count($parameters) == 2) {
 
             list($type, $value) = $parameters;
-            
+
             switch($type) {
                 case 'resources':
                 case 'resource':
-                case 'search':
                     include __DIR__ . '/../assets/html/docs-body-' . $type . '.php';
                     break;
                 default:
                     include __DIR__ . '/../assets/html/docs-body-notfound.php';
             };
+
+        } else if (count($parameters) == 1) {
+
+            $searchString = array_key_exists('search', $_GET) ? $_GET['search'] : '';
+
+            include __DIR__ . '/../assets/html/docs-body-search.php';
 
         } else if (count($parameters) == 0) {
 
@@ -282,10 +287,10 @@ abstract class Http {
 
             include __DIR__ . '/../assets/html/docs-body-notfound.php';
 
-        };        
+        };
 
         include __DIR__ . '/../assets/html/docs-footer.php';
-        
+
     }
 
 }
