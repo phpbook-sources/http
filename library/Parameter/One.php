@@ -52,7 +52,7 @@ class One extends \PHPBook\Http\Parameter {
 		$elementClass = $this->getElementClass();
 		foreach((new $elementClass)->getParameters() as $name => $parameter) {	
 			if ($this->hasInRule($rules, $name)) {
-				$parser = ((is_object($value)) and (property_exists($value, $name))) ? $value->{$name} : 
+				$parser = ((is_object($value)) and (isset($value->{$name}))) ? $value->{$name} :
                     (((is_array($value)) and (array_key_exists($name, $value))) ? $value[$name] : Null);
 				if ($parser !== Null) {
 					$item->{$name} = $parameter->intercept($this->nestRules($rules, $name), $parser);

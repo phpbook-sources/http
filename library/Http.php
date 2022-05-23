@@ -125,7 +125,7 @@ abstract class Http {
 
         if ($dispatch) {
 
-            $header = getallheaders();
+            $header = new HeaderParameter(getallheaders());
 
             if (count($_POST) == 0) {
 
