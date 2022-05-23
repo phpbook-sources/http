@@ -1,7 +1,7 @@
 <?php namespace PHPBook\Http;
 
 abstract class Http {
-
+    
     public static function start() {
 
         header("Access-Control-Allow-Origin:*");
@@ -19,9 +19,13 @@ abstract class Http {
 
             $requestAddress = explode('?', $_SERVER['REQUEST_URI']);
 
-            $requestUri = explode('/', $requestAddress[0]);
+            $requestUri = array_filter(explode('/', $requestAddress[0]), function($item) {
+                return strlen($item) > 0;
+            });
 
-            $directory = explode('/', pathinfo($_SERVER['PHP_SELF'])['dirname']);
+            $directory = array_filter(explode('/', pathinfo($_SERVER['PHP_SELF'])['dirname']), function($item) {
+                 return strlen($item) > 0;
+            });;
 
             $parameters = $requestUri;
 
@@ -259,21 +263,16 @@ abstract class Http {
         if (count($parameters) == 2) {
 
             list($type, $value) = $parameters;
-
+            
             switch($type) {
                 case 'resources':
                 case 'resource':
+                case 'search':
                     include __DIR__ . '/../assets/html/docs-body-' . $type . '.php';
                     break;
                 default:
                     include __DIR__ . '/../assets/html/docs-body-notfound.php';
             };
-
-        } else if (count($parameters) == 1) {
-
-            $searchString = array_key_exists('search', $_GET) ? $_GET['search'] : '';
-
-            include __DIR__ . '/../assets/html/docs-body-search.php';
 
         } else if (count($parameters) == 0) {
 
