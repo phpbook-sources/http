@@ -27,6 +27,10 @@
         color: #f9f9f9;
         height: 48px;
     }
+    .link-expand {
+        cursor: pointer;
+        color: #446894;
+    }
     .hidden-large-screen {
         display: none;
     }
@@ -39,7 +43,7 @@
         background-color: #f9f9f9;
     }
     .side-menu {
-        width: 260px;
+        width: 300px;
         float: left;
         min-height: 100%;
         -webkit-box-shadow: -5px 0px 13px 2px rgba(0,0,0,0.75);
@@ -49,8 +53,9 @@
         background-color: #f9f9f9;
     }
     .side-menu .container {
-        margin-left: 26px;
+        padding: 26px;
         display: block;
+        min-width: 260px;
     }
     .side-menu .container .title, .side-menu .container .title a, .side-menu .container .title a:hover {
         font-size: 26px;
@@ -76,8 +81,8 @@
         margin-left: 12px;
     }
     .side-menu .container .menu .link {
-        margin-top: 6px;
-        margin-bottom: 6px;
+        margin-top: 12px;
+        margin-bottom: 12px;
     }
     .side-menu .container .menu .link a {
         color: #3c9e95;

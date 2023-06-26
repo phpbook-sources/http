@@ -11,4 +11,9 @@
         };
         return false;
     };
+    var toggleMenu = function(e, query) {
+        var element = document.getElementById(query);
+        element.style.display = element.style.display === 'none' ? 'block' : 'none';
+        return false;
+    };
 </script>

@@ -56,11 +56,17 @@
 
             $html = '';
 
-            foreach($categoriesNode as $category) {
+            foreach($categoriesNode as $key => $category) {
 
                 $subitems = renderCategoryMenuRecursive($path, $category['sub'], $nestLevel + 1);
 
-                $html .= '<div class="link" style="margin-left: '.($nestLevel * 10).'px; display: block"><a href="' . $path . \PHPBook\Http\Configuration\Directory::getDocs() .'/resources/' . $category['key'].'" title="'.$category['name'].'">'.$category['name'].'</a>'.$subitems.'</div>';
+                $nestedNavigation = $nestLevel === 0;
+
+                $linkName = 'link-base-' . ($key + 1);
+
+                $buttonExpand = $subitems ? '<span class="link-expand" '.($nestedNavigation ? 'onClick="toggleMenu(this, \''.$linkName.'\')"' : '').'>[+]</span>' : '';
+
+                $html .= '<div class="link" style="margin-left: '.($nestLevel * 10).'px; display: block">'.($nestedNavigation ? $buttonExpand . ' ' : null).'<a href="' . $path . \PHPBook\Http\Configuration\Directory::getDocs() .'/resources/' . $category['key'].'" title="'.$category['name'].'">'.$category['name'].'</a><div '.($nestedNavigation ? 'id="'.($linkName).'" style="display: none"' : '').'>'.$subitems.'</div></div>';
 
             }
 
