@@ -256,7 +256,7 @@ abstract class Http {
 
     private static function startDocs(Array $parameters) {
 
-        list($type, $value) = count($parameters) == 2 ?  : ['none', 'none'];
+        list($type, $value) = count($parameters) == 2 ? $parameters : ['none', 'none'];
 
         include __DIR__ . '/../assets/html/docs-header.php';
 

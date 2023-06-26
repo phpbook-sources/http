@@ -52,13 +52,42 @@
 
         }
 
-        function renderCategoryMenuRecursive($path, $categoriesNode, $nestLevel = 0){
+        function hasSubcategoryActive($category, $currentCategory) {
+
+            $hasSubCategoryActive = false;
+
+            if (isset($category['sub'])) {
+
+                foreach($category['sub'] as $subCategory) {
+
+                    if ($subCategory['key'] == $currentCategory) {
+
+                        $hasSubCategoryActive = true;
+
+                        break;
+
+                    } else {
+
+                        $hasSubCategoryActive = hasSubcategoryActive($subCategory, $currentCategory);
+
+                    }
+
+                }
+
+            }
+
+            return $hasSubCategoryActive;
+        }
+
+        function renderCategoryMenuRecursive($path, $categoriesNode, $nestLevel = 0, $currentCategory = null){
 
             $html = '';
 
             foreach($categoriesNode as $key => $category) {
 
-                $subitems = renderCategoryMenuRecursive($path, $category['sub'], $nestLevel + 1);
+                $hasSubCategoryActive = hasSubcategoryActive($category, $currentCategory);
+
+                $subitems = renderCategoryMenuRecursive($path, $category['sub'], $nestLevel + 1, $currentCategory);
 
                 $nestedNavigation = $nestLevel === 0;
 
@@ -66,7 +95,7 @@
 
                 $buttonExpand = $subitems ? '<span class="link-expand" '.($nestedNavigation ? 'onClick="toggleMenu(this, \''.$linkName.'\')"' : '').'>[+]</span>' : '';
 
-                $html .= '<div class="link" style="margin-left: '.($nestLevel * 10).'px; display: block">'.($nestedNavigation ? $buttonExpand . ' ' : null).'<a href="' . $path . \PHPBook\Http\Configuration\Directory::getDocs() .'/resources/' . $category['key'].'" title="'.$category['name'].'">'.$category['name'].'</a><div '.($nestedNavigation ? 'id="'.($linkName).'" style="display: none"' : '').'>'.$subitems.'</div></div>';
+                $html .= '<div class="link" style="margin-left: '.($nestLevel * 10).'px; display: block">'.($nestedNavigation ? $buttonExpand . ' ' : null).'<a href="' . $path . \PHPBook\Http\Configuration\Directory::getDocs() .'/resources/' . $category['key'].'" title="'.$category['name'].'">'.$category['name'].'</a><div '.($nestedNavigation ? 'id="'.($linkName).'" style="display: '.($hasSubCategoryActive ? 'block' : 'none').'"' : '').'>'.$subitems.'</div></div>';
 
             }
 
@@ -113,7 +142,7 @@
 
 							<?php if (count($categoryMenuRecursive) > 0): ?>
 
-                                <?php echo renderCategoryMenuRecursive($path, $categoryMenuRecursive); ?>
+                                <?php echo renderCategoryMenuRecursive($path, $categoryMenuRecursive, 0, $value); ?>
 
 
                             <?php else: ?>
