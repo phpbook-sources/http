@@ -258,6 +258,16 @@ abstract class Http {
 
         list($type, $value) = count($parameters) == 2 ? $parameters : ['none', 'none'];
 
+        if (count($parameters) == 1 and $parameters[0] == 'postman') {
+
+            list($type, $value) = $parameters;
+
+            include __DIR__ . '/../assets/html/docs-body-' . $type . '.php';
+
+            return;
+
+        }
+
         include __DIR__ . '/../assets/html/docs-header.php';
 
         if (count($parameters) == 2) {

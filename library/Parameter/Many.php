@@ -56,4 +56,16 @@ class Many extends \PHPBook\Http\Parameter {
         return $schema;
 	}
 	
+    public function example(Array $rules) {
+        $elementClass = $this->getElementClass();
+        $elementItem = new $elementClass;
+        $example = new \StdClass;
+        foreach($elementItem->getParameters() as $name => $parameter) {
+            if ($this->hasInRule($rules, $name)) {
+                $example->{$name} = $parameter->example($this->nestRules($rules, $name));
+            };
+        };
+        return [$example];
+    }
+
 }

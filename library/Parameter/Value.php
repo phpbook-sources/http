@@ -28,5 +28,9 @@ class Value extends \PHPBook\Http\Parameter {
     public function schema(Array $rules) {
         return $this->getDescription();
     }
+
+    public function example(Array $rules) {
+        return ' - ' . $this->getDescription() . ' - ';
+    }
     
 }

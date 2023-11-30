@@ -16,6 +16,7 @@
 ### About Http
 
 - PHPBook Http is a lightweight and fast http PHP library to create apps and apis and provides auto documentation.  
+- You can export the API schema in a POSTMAN JSON File.
 
 ### Composer Install
 
@@ -108,7 +109,7 @@ class AuthenticationElement extends \PHPBook\Http\Element {
 
 	public function __construct() {
         
-        $this->setDescription('Authentication');
+		$this->setDescription('Authentication');
 
 		$this->setParameter('My-Key', new \PHPBook\Http\Parameter\Value('header key auth'));
 		$this->setParameter('User-Agent', new \PHPBook\Http\Parameter\Value('header key auth'));
@@ -122,7 +123,7 @@ class CustomerQueryElement extends \PHPBook\Http\Element {
 
 	public function __construct() {
         
-        $this->setDescription('Query Filter');
+		$this->setDescription('Query Filter');
 
 		$this->setParameter('ageStarts', new \PHPBook\Http\Parameter\Value('age starts with'));
 
@@ -134,7 +135,7 @@ class FoodElement extends \PHPBook\Http\Element {
 
 	public function __construct() {
             
-        $this->setDescription('Food');
+		$this->setDescription('Food');
 
 		$this->setParameter('id', new \PHPBook\Http\Parameter\Value('food id description'));
 		$this->setParameter('name', new \PHPBook\Http\Parameter\Value('food name description'));
@@ -147,7 +148,7 @@ class FriendElement extends \PHPBook\Http\Element {
 
 	public function __construct() {
         
-        $this->setDescription('Friend');
+		$this->setDescription('Friend');
 
 		$this->setParameter('id', new \PHPBook\Http\Parameter\Value('friend id description'));
 		$this->setParameter('name', new \PHPBook\Http\Parameter\Value('friend name description'));
@@ -161,7 +162,7 @@ class CustomerElement extends \PHPBook\Http\Element {
 
 	public function __construct() {
         
-        $this->setDescription('Customer');
+		$this->setDescription('Customer');
 
 		$this->setParameter('id', new \PHPBook\Http\Parameter\Value('customer id description'));
 		$this->setParameter('name', new \PHPBook\Http\Parameter\Value('customer name description'));
@@ -177,7 +178,7 @@ class EncapsulationBeanElement extends \PHPBook\Http\Element {
 
 	public function __construct() {
         
-        $this->setDescription('Bean');
+		$this->setDescription('Bean');
 
 		$this->setParameter('id', new \PHPBook\Http\Parameter\Value('customer id description', 'getId'));
 		$this->setParameter('name', new \PHPBook\Http\Parameter\Value('customer name description', 'getName'));
@@ -205,11 +206,11 @@ class EncapsulationBeanElement extends \PHPBook\Http\Element {
 
 /**
  * @PHPBookHttpMiddleware{
- *      "setCode": "'authenticationMiddleware'"
- *      "setName": "'Authentication Middleware'"
- * 		"setInputHeader": "'\PHPBook\Http\Parameter\One', 'AuthenticationElement', []"
- *		"setParameters": "['requireRole']"
- *      "setRelation": "[['get', 'user/permissions']]"
+ *	"setCode": "'authenticationMiddleware'"
+ *	"setName": "'Authentication Middleware'"
+ *	"setInputHeader": "'\PHPBook\Http\Parameter\One', 'AuthenticationElement', []"
+ *	"setParameters": "['requireRole']"
+ *	"setRelation": "[['get', 'user/permissions']]"
  * }
  */
 class AuthenticationMiddleware {
@@ -262,13 +263,13 @@ class CustomerController {
 
 	/**
 	 * @PHPBookHttpRequestResource{
-	 *      "setCategoryCode": "'customerCategory'"
-	 *      "setUri": "'customer/post'"
-	 * 		"setNotes": "'Any important note'"
-	 * 		"setType": "'post'"
-     *      "setRelation": "[['get', 'customer/email/exists'], ['get', 'customer/name/exists']]"
-	 * 		"setInputBody": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['except' => ['id']]"
-	 * 		"setOutput": "'\PHPBook\Http\Parameter\One', 'CustomerElement', []"
+	 *  "setCategoryCode": "'customerCategory'"
+	 *  "setUri": "'customer/post'"
+	 *	"setNotes": "'Any important note'"
+	 *	"setType": "'post'"
+     *  "setRelation": "[['get', 'customer/email/exists'], ['get', 'customer/name/exists']]"
+	 * 	"setInputBody": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['except' => ['id']]"
+	 * 	"setOutput": "'\PHPBook\Http\Parameter\One', 'CustomerElement', []"
 	 * }
 	 */
 	public function post($inputs, $output) {
@@ -292,13 +293,13 @@ class CustomerController {
 
 	/**
 	 * @PHPBookHttpRequestResource{
-	 *      "setCategoryCode": "'customerCategory'"
-	 *      "setUri": "'customer/put/:id'"
-	 * 		"setNotes": "'Any important note'"
-	 * 		"setType": "'put'"
-	 * 		"setInputUri": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']]"
-	 * 		"setInputBody": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['except' => ['id']]"
-	 * 		"setOutput": "'\PHPBook\Http\Parameter\One', 'CustomerElement', []"
+	 *	"setCategoryCode": "'customerCategory'"
+	 *	"setUri": "'customer/put/:id'"
+	 *	"setNotes": "'Any important note'"
+	 *	"setType": "'put'"
+	 *	"setInputUri": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']]"
+	 *	"setInputBody": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['except' => ['id']]"
+	 *	"setOutput": "'\PHPBook\Http\Parameter\One', 'CustomerElement', []"
 	 * }
 	 */
 	public function put($inputs, $output) {
@@ -320,12 +321,12 @@ class CustomerController {
 
 	/**
 	 * @PHPBookHttpRequestResource{
-	 *      "setCategoryCode": "'customerCategory'"
-	 *      "setUri": "'customer/get/:id'"
-	 * 		"setNotes": "'Any important note'"
-	 * 		"setType": "'get'"
-	 * 		"setInputUri": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']]"
-	 * 		"setOutput": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['except' => ['id', 'friends.id']]"
+	 *	"setCategoryCode": "'customerCategory'"
+	 *	"setUri": "'customer/get/:id'"
+	 *	"setNotes": "'Any important note'"
+	 *	"setType": "'get'"
+	 *	"setInputUri": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']]"
+	 *	"setOutput": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['except' => ['id', 'friends.id']]"
 	 * }
 	 */
 	public function get($inputs, $output) {
@@ -362,12 +363,12 @@ class CustomerController {
 
 	/**
 	 * @PHPBookHttpRequestResource{
-	 *      "setCategoryCode": "'customerCategory'"
-	 *      "setUri": "'customer/query'"
-	 * 		"setNotes": "'Any important note'"
-	 * 		"setType": "'get'"
-	 * 		"setInputQuery": "'\PHPBook\Http\Parameter\One', 'CustomerQueryElement', []"
-	 * 		"setOutput": "'\PHPBook\Http\Parameter\One', 'CustomerElement', []"
+	 *	"setCategoryCode": "'customerCategory'"
+	 *	"setUri": "'customer/query'"
+	 *	"setNotes": "'Any important note'"
+	 *	"setType": "'get'"
+	 *	"setInputQuery": "'\PHPBook\Http\Parameter\One', 'CustomerQueryElement', []"
+	 *	"setOutput": "'\PHPBook\Http\Parameter\One', 'CustomerElement', []"
 	 * }
 	 */
 	public function query($inputs, $output) {
@@ -396,14 +397,14 @@ class CustomerController {
 
 	/**
 	 * @PHPBookHttpRequestResource{
-	 *      "setCategoryCode": "'customerCategory'"
-	 *      "setUri": "'customer/get/:id/photo/:alias'"
-	 * 		"setNotes": "'Any important note'"
-	 * 		"setType": "'get'"
-	 * 		"setInputUri": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']]"
-	 * 		"setOutput": "'\PHPBook\Http\Parameter\One', 'CustomerElement', []"
-	 * 		"setIsBufferOutput": "true"
-	 * 		"setCacheHours": "72"
+	 *	"setCategoryCode": "'customerCategory'"
+	 *	"setUri": "'customer/get/:id/photo/:alias'"
+	 *	"setNotes": "'Any important note'"
+	 *	"setType": "'get'"
+	 *	"setInputUri": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']]"
+	 *	"setOutput": "'\PHPBook\Http\Parameter\One', 'CustomerElement', []"
+	 *	"setIsBufferOutput": "true"
+	 *	"setCacheHours": "72"
 	 * }
 	 */
 	public function photo($inputs, $output) {
@@ -427,12 +428,12 @@ class CustomerController {
 
 	/**
 	 * @PHPBookHttpRequestResource{
-	 *      "setCategoryCode": "'customerCategory'"
-	 *      "setUri": "'customer/delete/:id'"
-	 * 		"setNotes": "'Any important note'"
-	 *		"setMiddlewareCode": "'authenticationMiddleware:roleDeleteCustomer'"
-	 * 		"setType": "'delete'"
-	 * 		"setInputUri": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']]"
+	 *	"setCategoryCode": "'customerCategory'"
+	 *	"setUri": "'customer/delete/:id'"
+	 *	"setNotes": "'Any important note'"
+	 *	"setMiddlewareCode": "'authenticationMiddleware:roleDeleteCustomer'"
+	 *	"setType": "'delete'"
+	 *	"setInputUri": "'\PHPBook\Http\Parameter\One', 'CustomerElement', ['only' => ['id']]"
 	 * }
 	 */
 	public function delete($inputs, $output, \Authentication\User $user) {
