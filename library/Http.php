@@ -260,7 +260,7 @@ abstract class Http {
 
         if (count($parameters) == 1 and $parameters[0] == 'postman') {
 
-            list($type, $value) = $parameters;
+            list($type) = $parameters;
 
             include __DIR__ . '/../assets/html/docs-body-' . $type . '.php';
 

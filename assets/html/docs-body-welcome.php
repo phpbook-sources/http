@@ -3,7 +3,7 @@
 		Welcome to the <?php echo \PHPBook\Http\Configuration\Meta::getName(); ?> HTTP Documentation
 	</div>
 
-	<div>
+	<div class="link">
         <a target="_blank" href="<?php echo $path; ?><?php echo \PHPBook\Http\Configuration\Directory::getDocs(); ?>/postman">	Download POSTMAN Schema
     	</a>
     </div>
